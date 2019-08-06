@@ -1,0 +1,56 @@
+#version 330 core
+
+
+// Light and Material Uniform Variables
+uniform vec4 materialCoefficients; // x: ambient   y: diffuse   z: specular   w: specular exponent
+
+uniform vec3 lightColor;
+uniform vec3 lightAttenuation; // x: kC  y: kL  z: kQ
+
+
+// Inputs
+in vec3 v_color;		 // vertex color: also diffuse color
+
+in vec3 normal;          // Transformed normal in View Space
+in vec3 eyeVector;       // Vector from the vertex to the Camera in View Space
+in vec4 lightVector;     // Vector from the vertex to the Light in View Space
+						 // Length of lightVector is the distance between light and vertex
+						 // if w = 1: Point light, if w = 0: directional light
+
+// Ouput data
+out vec3 color;
+
+
+void main()
+{
+	// Implment Phong Shading based on the parameters above
+	// Remember that directional light don't have attenuation
+
+	// Calculate normalized vectors
+	vec3 nNormal = normalize(normal);
+	vec3 nEyeVector = normalize(eyeVector);
+	vec3 nLightVector = normalize(vec3(lightVector));
+
+	// Calculate the Attenuation. Attenuation is used here, instead of in part 1, since the light coefficients are correctly set for a good effect.
+	float attenuation = 1.0f;
+	if (lightVector.w > 0.5f) { // w does not always return exactly 1.0f, for some reason.
+		float distance = length(vec3(lightVector));
+		attenuation = 1.0f / (lightAttenuation.x + distance*lightAttenuation.y + distance*distance*lightAttenuation.z);
+	}
+	
+	// Calculate the Ambiant.
+	vec3 ambiant = materialCoefficients.x * lightColor;
+	
+	// Calculate the Diffuse.
+	vec3 diffuse = materialCoefficients.y * attenuation * lightColor * max(0.0f, dot(nNormal, nLightVector));
+
+	// Calculate the Specular.
+	vec3 reflectDirection = 2 * dot(nNormal, nLightVector) * nNormal - nLightVector;
+	vec3 specular = vec3(0.0f);
+	if (materialCoefficients.z > 0.0f && materialCoefficients.w > 0.0f) { // Having both at 0 for the cube caused graphical issues.
+		specular = materialCoefficients.z * attenuation * lightColor * pow(max(0.0f, dot(nEyeVector, reflectDirection)), materialCoefficients.w);
+	}
+
+	// Calculate the final color. Specular is kept outside as it is a direct reflection of the light, rather than a direct manifestation of the material's color. Better result.
+	color = v_color * (diffuse + ambiant) + specular; 
+}

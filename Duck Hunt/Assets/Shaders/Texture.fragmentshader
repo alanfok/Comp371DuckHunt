@@ -1,0 +1,56 @@
+#version 330 core
+
+// Interpolated values from the vertex shaders
+in vec2 UV;
+in vec4 v_color;
+
+in vec3 normal;          // Transformed normal in View Space
+in vec3 eyeVector;       // Vector from the vertex to the Camera in View Space
+in vec4 lightVector;     // Vector from the vertex to the Light in View Space
+						 // Length of lightVector is the distance between light and vertex
+						 // if w = 1: Point light, if w = 0: directional light
+
+// Ouput data
+out vec4 color;
+
+// Values that stay constant for the whole mesh.
+uniform sampler2D myTextureSampler;
+uniform vec3 lightColor;
+uniform vec3 lightAttenuation; // x: kC  y: kL  z: kQ
+
+void main()
+{
+	vec4 materialCoefficients = vec4(0.5f, 0.5f, 0.2f, 1.0f);
+	vec4 textureColor = texture( myTextureSampler, UV );
+
+	// Calculate normalized vectors
+	vec3 nNormal = normalize(normal);
+	vec3 nEyeVector = normalize(eyeVector);
+	vec3 nLightVector = normalize(vec3(lightVector));
+
+	float attenuation = 1.0f;
+	if (lightVector.w > 0.5f) { // w does not always return exactly 1.0f, for some reason.
+		float distance = length(vec3(lightVector));
+		attenuation = 1.0f / (lightAttenuation.x + distance*lightAttenuation.y + distance*distance*lightAttenuation.z);
+	}
+	
+	// Calculate the Ambiant.
+	vec3 ambiant = materialCoefficients.x * lightColor;
+	
+	// Calculate the Diffuse.
+	vec3 diffuse = materialCoefficients.y * attenuation * lightColor * max(0.0f, dot(nEyeVector, nLightVector));
+
+	// Calculate the Specular.
+	vec3 reflectDirection = 2 * dot(nNormal, nLightVector) * nNormal - nLightVector;
+	vec3 specular = vec3(0.0f);
+	if (materialCoefficients.z > 0.0f && materialCoefficients.w > 0.0f) { // Having both at 0 for the cube caused graphical issues.
+		specular = materialCoefficients.z * attenuation * lightColor * pow(max(0.0f, dot(nEyeVector, reflectDirection)), materialCoefficients.w);
+	}
+
+	// Calculate the final color. Specular is kept outside as it is a direct reflection of the light, rather than a direct manifestation of the material's color. Better result.
+	color = vec4(vec3(v_color) * vec3(textureColor) * (diffuse + ambiant) + specular, v_color.a * textureColor.a); 
+
+    // Alpha test - Discard Fragment below treshold
+    if(color.a <= 0.02f)
+        discard;
+}

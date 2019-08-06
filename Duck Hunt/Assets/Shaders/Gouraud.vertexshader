@@ -1,0 +1,75 @@
+#version 330 core
+
+// Input vertex data, different for all executions of this shader.
+layout(location = 0) in vec3 vertexPosition_modelspace;
+layout(location = 1) in vec3 vertexNormal_modelspace;  // You will need this when you do lighting
+layout(location = 2) in vec3 vertexColor; 
+
+// output to Fragment Shader
+out vec3 v_color;
+
+// Uniform
+// Values that stay constant for the whole mesh.
+uniform mat4 WorldTransform;
+uniform mat4 ViewTransform;
+uniform mat4 ProjectonTransform;
+
+
+// Light and Material Uniform Variables
+uniform vec4 WorldLightPosition; // if w = 1: Point light, if w = 0: directional light
+uniform vec4 materialCoefficients; // x: ambient   y: diffuse   z: specular   w: specular exponent
+
+uniform vec3 lightColor;
+uniform vec3 lightAttenuation; // x: kC  y: kL  z: kQ
+
+void main()
+{
+	mat4 MV = ViewTransform * WorldTransform;
+	mat4 MVP = ProjectonTransform * MV;
+
+	// Output position of the vertex, in clip space : MVP * position
+	gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
+	v_color = vertexColor;
+
+
+	// Implement Gouraud shading here...
+	// ...
+
+	vec3 normal = vec3 (transpose(inverse(MV)) * vec4(vertexNormal_modelspace, 0.0f));
+	
+	vec3 eyeVector = -vec3(MV * vec4(vertexPosition_modelspace,1));
+	vec4 lightVector = ViewTransform * WorldLightPosition;
+	if (WorldLightPosition.w == 0) 
+	{
+		lightVector = -lightVector;
+	}
+	else 
+	{
+		lightVector = lightVector + vec4(eyeVector, 0.0f);
+	}
+
+	// Calculate normalized vectors
+	vec3 nNormal = normalize(normal);
+	vec3 nEyeVector = normalize(eyeVector);
+	vec3 nLightVector = normalize(vec3(lightVector));
+
+	// Calculate the Attenuation. The returned value is ridiculously low though, so unusable for now?
+	float attenuation = 1.0f;
+	if (lightVector.w > 0.5f) { // w does not always return exactly 1.0f, for some reason.
+		float distance = length(vec3(lightVector));
+		attenuation = 1.0f / (lightAttenuation.x + distance*lightAttenuation.y + distance*distance*lightAttenuation.z);
+	}
+	
+	// Calculate the Ambiant.
+	vec3 ambiant = materialCoefficients.x * lightColor;
+	
+	// Calculate the Diffuse. Attenuation isn't used since it divides the whole thing by far too much to be visible.
+	vec3 diffuse = materialCoefficients.y * lightColor * max(0.0f, dot(nNormal, nLightVector));
+
+	// Calculate the Specular.
+	vec3 reflectDirection = 2 * dot(nNormal, nLightVector) * nNormal - nLightVector;
+	vec3 specular = materialCoefficients.z * lightColor * pow(max(0.0f, dot(nEyeVector, reflectDirection)), materialCoefficients.w);
+
+	// This should be the final color on the Vertex, including the lighting
+	v_color = vertexColor * (diffuse + ambiant) + specular; 
+}
