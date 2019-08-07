@@ -48,7 +48,7 @@ public:
 	glm::vec3 GetLightAttenuation();
 	glm::vec4 GetLightPosition();
 
-    
+   
 private:
     static World* instance;
     
@@ -60,7 +60,7 @@ private:
     std::vector<ParticleDescriptor*> mParticleDescriptorList;
 	unsigned int mCurrentCamera;
 
-	
+	bool lastMouseState = false;
 
     BillboardList* mpBillboardList;
 };

@@ -66,6 +66,89 @@ key      = "KeyCycle8"  time = 7.0f
 key      = "KeyCycle1"  time = 8.0f
 
 
+[AnimationKey]
+name     = "KeyCycle11"
+position = 10.0 6.0 0.0
+
+[AnimationKey]
+name     = "KeyCycle21"
+position = 7.07 8.0 7.07
+
+
+[AnimationKey]
+name     = "KeyCycle31"
+position = 0.0 10.0 10.0
+
+[AnimationKey]
+name     = "KeyCycle41"
+position = -7.07 6.0 7.07
+
+
+[AnimationKey]
+name     = "KeyCycle51"
+position = -10.0 5.0 0.0
+
+[AnimationKey]
+name     = "KeyCycle61"
+position = -7.07 3.0 -7.07
+
+[AnimationKey]
+name     = "KeyCycle71"
+position = 0.0 7.0 -10.0
+
+[AnimationKey]
+name     = "KeyCycle81"
+position = 7.07 6.0 -7.07
+
+
+[Animation]
+name     = "CycleAnim1"
+key      = "KeyCycle11"  time = 0.0f
+key      = "KeyCycle21"  time = 1.0f
+key      = "KeyCycle31"  time = 2.0f
+key      = "KeyCycle41"  time = 3.0f
+key      = "KeyCycle51"  time = 4.0f
+key      = "KeyCycle61"  time = 5.0f
+key      = "KeyCycle71"  time = 6.0f
+key      = "KeyCycle81"  time = 7.0f
+key      = "KeyCycle11"  time = 8.0f
+
+
+
+[AnimationKey]
+name     = "KeyCycle11"
+position = 10.0 6.0 0.0
+
+[AnimationKey]
+name     = "KeyCycle21"
+position = 7.07 8.0 7.07
+
+
+[AnimationKey]
+name     = "KeyCycle31"
+position = 0.0 10.0 10.0
+
+[AnimationKey]
+name     = "KeyCycle41"
+position = -7.07 6.0 7.07
+
+
+[AnimationKey]
+name     = "KeyCycle51"
+position = -10.0 5.0 0.0
+
+[AnimationKey]
+name     = "KeyCycle61"
+position = -7.07 3.0 -7.07
+
+[AnimationKey]
+name     = "KeyCycle71"
+position = 0.0 7.0 -10.0
+
+[AnimationKey]
+name     = "KeyCycle81"
+position = 7.07 6.0 -7.07
+
 [Cube]
 name     = "Ground"
 scaling  = 100.0 100.0 100.0
@@ -100,6 +183,14 @@ rotation = 0.0 0.0 1.0 180
 animation = "BackAndForth"
 particleEmitter = "Fountain"
 
+
+[Cube]
+name     = "Cube1"
+position = 0.0 6.0 0.0
+animation = "CycleAnim1"
+particleEmitter = "Fountain"
+
+
 [ParticleDescriptor]
 name        = "Smoke"
 velocity = 0.0 0.1 0.0
@@ -125,3 +216,103 @@ position = 10.0 2.0 0.0
 animation = "CycleAnim"
 particleEmitter = "Smoke"
 
+[AnimationKey]
+name     = "KeyCycle12"
+position = 10.0 4.0 0.0
+
+[AnimationKey]
+name     = "KeyCycle22"
+position = 7.07 6.0 7.07
+
+
+[AnimationKey]
+name     = "KeyCycle32"
+position = 0.0 8.0 10.0
+
+[AnimationKey]
+name     = "KeyCycle42"
+position = -7.07 4.0 7.07
+
+[AnimationKey]
+name     = "KeyCycle52"
+position = -10.0 3.0 0.0
+
+[AnimationKey]
+name     = "KeyCycle62"
+position = -7.07 1.0 -7.07
+
+[AnimationKey]
+name     = "KeyCycle72"
+position = 0.0 5.0 -10.0
+
+[AnimationKey]
+name     = "KeyCycle82"
+position = 7.07 4.0 -7.07
+
+[Animation]
+name     = "CycleAnim2"
+key      = "KeyCycle12"  time = 0.0f
+key      = "KeyCycle22"  time = 1.0f
+key      = "KeyCycle32"  time = 2.0f
+key      = "KeyCycle42"  time = 3.0f
+key      = "KeyCycle52"  time = 4.0f
+key      = "KeyCycle62"  time = 5.0f
+key      = "KeyCycle72"  time = 6.0f
+key      = "KeyCycle82"  time = 7.0f
+key      = "KeyCycle12"  time = 8.0f
+
+[Cube]
+name     = "Cube2"
+position = 0.0 4.0 0.0
+animation = "CycleAnim2"
+particleEmitter = "Fountain"
+
+[AnimationKey]
+name     = "KeyCycle13"
+position = 10.0 8.0 0.0
+
+[AnimationKey]
+name     = "KeyCycle23"
+position = 7.07 10.0 7.07
+
+[AnimationKey]
+name     = "KeyCycle33"
+position = 0.0 12.0 10.0
+
+[AnimationKey]
+name     = "KeyCycle43"
+position = -7.07 8.0 7.07
+
+[AnimationKey]
+name     = "KeyCycle53"
+position = -10.0 7.0 0.0
+
+[AnimationKey]
+name     = "KeyCycle63"
+position = -7.07 5.0 -7.07
+
+[AnimationKey]
+name     = "KeyCycle73"
+position = 0.0 9.0 -10.0
+
+[AnimationKey]
+name     = "KeyCycle83"
+position = 7.07 8.0 -7.07
+
+[Animation]
+name     = "CycleAnim3"
+key      = "KeyCycle13"  time = 0.0f
+key      = "KeyCycle23"  time = 1.0f
+key      = "KeyCycle33"  time = 2.0f
+key      = "KeyCycle43"  time = 3.0f
+key      = "KeyCycle53"  time = 4.0f
+key      = "KeyCycle63"  time = 5.0f
+key      = "KeyCycle73"  time = 6.0f
+key      = "KeyCycle83"  time = 7.0f
+key      = "KeyCycle13"  time = 8.0f
+
+[Cube]
+name     = "Cube3"
+position = 0.0 8.0 0.0
+animation = "CycleAnim3"
+particleEmitter = "Fountain"

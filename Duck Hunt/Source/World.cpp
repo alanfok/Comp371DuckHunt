@@ -158,6 +158,19 @@ void World::Update(float dt)
 		Renderer::SetShader(SHADER_BLUE);
 	}
 
+	// shooting
+	if (lastMouseState == false && glfwGetMouseButton(EventManager::GetWindow(), GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+    {
+        printf("I like trains");
+        cout << "clicked" << endl;
+        lastMouseState = true;
+    }
+
+    if (glfwGetMouseButton(EventManager::GetWindow(), GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE)
+    {
+        lastMouseState = false;
+    }
+
     // Update animation and keys
     for (vector<Animation*>::iterator it = mAnimation.begin(); it < mAnimation.end(); ++it)
     {
