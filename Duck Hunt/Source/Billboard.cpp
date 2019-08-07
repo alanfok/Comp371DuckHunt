@@ -145,6 +145,9 @@ void BillboardList::Update(float dt)
     // Maybe the view matrix will be useful to align the billboards
     const Camera* cam = World::GetInstance()->GetCurrentCamera();
     mat4 viewMatrix = cam->GetViewMatrix();
+	vec3 camLookAt(viewMatrix[0][2], viewMatrix[1][2], viewMatrix[2][2]);
+	vec3 camRightWorldSpace(viewMatrix[0][0], viewMatrix[1][0], viewMatrix[2][0]);
+	vec3 camUpWorldSpace(viewMatrix[0][1], viewMatrix[1][1], viewMatrix[2][1]);
     
     for (list<Billboard*>::iterator it = mBillboardList.begin(); it != mBillboardList.end(); ++it)
     {
@@ -160,31 +163,17 @@ void BillboardList::Update(float dt)
         // Currently, positions are aligned with the X-Y plane, billboards must face the camera
         //
         // You must update the positions and normals for the 6 vertices below
-		
-		// Extract the vectors from the view Matrix
-		vec4 camRight = viewMatrix[0];
-		vec4 camUp = viewMatrix[1];
-		vec4 camLookat = viewMatrix[2];
-
-		// Fix the Z values: Without doing that, the particles rotate in the opposite direction as the camera.
-		camRight[2] *= -1;
-		camUp[2] *= -1;
-		camLookat[2] *= -1;
-
-		// Rotate the Up and Right vectors according to the billboard's rotation angle
-		camRight = rotate(mat4(1.0f), radians(b->angle), vec3(camLookat)) * camRight;
-		camUp = rotate(mat4(1.0f), radians(b->angle), vec3(camLookat)) * camUp;
 
         // Normals
-        mVertexBuffer[firstVertexIndex].normal = mVertexBuffer[firstVertexIndex + 1].normal = mVertexBuffer[firstVertexIndex +2].normal = mVertexBuffer[firstVertexIndex + 3].normal = mVertexBuffer[firstVertexIndex + 4].normal = mVertexBuffer[firstVertexIndex + 5].normal = camLookat; // wrong...
+        mVertexBuffer[firstVertexIndex].normal = mVertexBuffer[firstVertexIndex + 1].normal = mVertexBuffer[firstVertexIndex +2].normal = mVertexBuffer[firstVertexIndex + 3].normal = mVertexBuffer[firstVertexIndex + 4].normal = mVertexBuffer[firstVertexIndex + 5].normal = -camLookAt;
         
 		// Vertex positions
-		mVertexBuffer[firstVertexIndex].position = b->position - vec3(camRight) * 0.5f*b->size.x + vec3(camUp) * 0.5f*b->size.y; // Top Left
-		mVertexBuffer[firstVertexIndex + 1].position = b->position - vec3(camRight) * 0.5f*b->size.x - vec3(camUp) * 0.5f*b->size.y; // Bottom Left
-		mVertexBuffer[firstVertexIndex + 2].position = b->position + vec3(camRight) * 0.5f*b->size.x + vec3(camUp) * 0.5f*b->size.y; // Top Right
-		mVertexBuffer[firstVertexIndex + 3].position = b->position + vec3(camRight) * 0.5f*b->size.x + vec3(camUp) * 0.5f*b->size.y; // Top Right
-		mVertexBuffer[firstVertexIndex + 4].position = b->position - vec3(camRight) * 0.5f*b->size.x - vec3(camUp) * 0.5f*b->size.y; // Bottom Left
-		mVertexBuffer[firstVertexIndex + 5].position = b->position + vec3(camRight) * 0.5f*b->size.x - vec3(camUp) * 0.5f*b->size.y; // Bottom Right
+		mVertexBuffer[firstVertexIndex].position = b->position - vec3(camRightWorldSpace) * 0.5f*b->size.x + vec3(camUpWorldSpace) * 0.5f*b->size.y; // Top Left
+		mVertexBuffer[firstVertexIndex + 1].position = b->position - vec3(camRightWorldSpace) * 0.5f*b->size.x - vec3(camUpWorldSpace) * 0.5f*b->size.y; // Bottom Left
+		mVertexBuffer[firstVertexIndex + 2].position = b->position + vec3(camRightWorldSpace) * 0.5f*b->size.x + vec3(camUpWorldSpace) * 0.5f*b->size.y; // Top Right
+		mVertexBuffer[firstVertexIndex + 3].position = b->position + vec3(camRightWorldSpace) * 0.5f*b->size.x + vec3(camUpWorldSpace) * 0.5f*b->size.y; // Top Right
+		mVertexBuffer[firstVertexIndex + 4].position = b->position - vec3(camRightWorldSpace) * 0.5f*b->size.x - vec3(camUpWorldSpace) * 0.5f*b->size.y; // Bottom Left
+		mVertexBuffer[firstVertexIndex + 5].position = b->position + vec3(camRightWorldSpace) * 0.5f*b->size.x - vec3(camUpWorldSpace) * 0.5f*b->size.y; // Bottom Right
 		
         //// First triangle
         //// Top left
