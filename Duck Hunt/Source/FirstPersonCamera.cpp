@@ -13,12 +13,12 @@
 
 #include <GLFW/glfw3.h>
 #include <algorithm>
-
+#include <iostream>
 
 
 using namespace glm;
 
-FirstPersonCamera::FirstPersonCamera(glm::vec3 position) :  Camera(), mPosition(position), mLookAt(0.0f, 0.0f, -1.0f), mHorizontalAngle(90.0f), mVerticalAngle(0.0f), mSpeed(5.0f), mAngularSpeed(2.5f)
+FirstPersonCamera::FirstPersonCamera(glm::vec3 position) :  Camera(), mPosition(position), initialPosition(position), mLookAt(0.0f, 0.0f, -1.0f), mHorizontalAngle(90.0f), mVerticalAngle(0.0f), mSpeed(5.0f), mAngularSpeed(2.5f)
 {
 }
 
@@ -43,14 +43,16 @@ void FirstPersonCamera::Update(float dt)
 
 	// Clamp vertical angle to [-85, 85] degrees
 	mVerticalAngle = std::max(-85.0f, std::min(85.0f, mVerticalAngle));
-	if (mHorizontalAngle > 360)
+	// clamp horizontal angle
+	mHorizontalAngle = std::max(70.0f, std::min(120.0f, mHorizontalAngle));
+	/*if (mHorizontalAngle > 360)
 	{
 		mHorizontalAngle -= 360;
 	}
 	else if (mHorizontalAngle < -360)
 	{
 		mHorizontalAngle += 360;
-	}
+	}*/
 
 	float theta = radians(mHorizontalAngle);
 	float phi = radians(mVerticalAngle);
@@ -63,12 +65,18 @@ void FirstPersonCamera::Update(float dt)
 	// A S D W for motion along the camera basis vectors
 	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_W ) == GLFW_PRESS)
 	{
-		mPosition += mLookAt * dt * mSpeed;
+		//keep camera on the floor; block camera movement in the y axis 
+		mPosition.y = initialPosition.y;
+		mPosition += vec3(mLookAt.x,0.0f, mLookAt.z) * dt * mSpeed;
+
+			
 	}
 
 	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_S ) == GLFW_PRESS)
 	{
-		mPosition -= mLookAt * dt * mSpeed;
+		//keep camera on the floor;block camera movement in the y axis 
+		mPosition.y = initialPosition.y;		
+		mPosition -= vec3(mLookAt.x, 0.0f, mLookAt.z) * dt * mSpeed;
 	}
 
 	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_D ) == GLFW_PRESS)
