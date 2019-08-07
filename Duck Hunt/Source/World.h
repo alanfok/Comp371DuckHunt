@@ -38,8 +38,8 @@ public:
     ParticleDescriptor* FindParticleDescriptor(ci_string name);
 
     const Camera* GetCurrentCamera() const;
-    void AddBillboard(Billboard* b);
-    void RemoveBillboard(Billboard* b);
+    void AddBillboard(Billboard* b, bool feather = false);
+    void RemoveBillboard(Billboard* b, bool feather = false);
     void AddParticleSystem(ParticleSystem* particleSystem);
     void RemoveParticleSystem(ParticleSystem* particleSystem);
     void AddParticleDescriptor(ParticleDescriptor* particleDescriptor);
@@ -63,4 +63,5 @@ private:
 	bool lastMouseState = false;
 
     BillboardList* mpBillboardList;
+	BillboardList* mpFeatherBillboardList;
 };

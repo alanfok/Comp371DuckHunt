@@ -50,10 +50,12 @@ World::World()
 #else
 //    int billboardTextureID = TextureLoader::LoadTexture("../Assets/Textures/BillboardTest.bmp");
     int billboardTextureID = TextureLoader::LoadTexture("../Assets/Textures/Particle.png");
+	int featherBillboardTextureID = TextureLoader::LoadTexture("../Assets/Textures/Feather.png");
 #endif
     assert(billboardTextureID != 0);
 
     mpBillboardList = new BillboardList(2048, billboardTextureID);
+	mpFeatherBillboardList = new BillboardList(1024, featherBillboardTextureID);
 
     
     // TODO - You can un-comment out these 2 temporary billboards and particle system
@@ -118,6 +120,7 @@ World::~World()
 
     
 	delete mpBillboardList;
+	delete mpFeatherBillboardList;
 }
 
 World* World::GetInstance()
@@ -200,7 +203,7 @@ void World::Update(float dt)
     }
     
     mpBillboardList->Update(dt);
-
+	mpFeatherBillboardList->Update(dt);
 }
 
 void World::Draw()
@@ -279,6 +282,7 @@ void World::Draw()
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     mpBillboardList->Draw();
+	mpFeatherBillboardList->Draw();
     glDisable(GL_BLEND);
 
 
@@ -392,14 +396,28 @@ const Camera* World::GetCurrentCamera() const
      return mCamera[mCurrentCamera];
 }
 
-void World::AddBillboard(Billboard* b)
+void World::AddBillboard(Billboard* b, bool feather)
 {
-    mpBillboardList->AddBillboard(b);
+	if (!feather)
+	{
+		mpBillboardList->AddBillboard(b);
+	}
+	else
+	{
+		mpFeatherBillboardList->AddBillboard(b);
+	}
 }
 
-void World::RemoveBillboard(Billboard* b)
+void World::RemoveBillboard(Billboard* b, bool feather)
 {
-    mpBillboardList->RemoveBillboard(b);
+	if (!feather)
+	{
+		mpBillboardList->RemoveBillboard(b);
+	}
+	else
+	{
+		mpFeatherBillboardList->RemoveBillboard(b);
+	}
 }
 
 void World::AddParticleSystem(ParticleSystem* particleSystem)
