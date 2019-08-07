@@ -175,21 +175,6 @@ fadeOutTime = 0.7
 totalLifetime = 2.0
 totalLifetimeRandomness = 0.3
 
-[Cube]
-name     = "Cube"
-scaling  = 1.0 1.0 1.0
-position = 0.0 1.0 0.0
-rotation = 0.0 0.0 1.0 180
-animation = "BackAndForth"
-particleEmitter = "Fountain"
-
-
-[Cube]
-name     = "Cube1"
-position = 0.0 6.0 0.0
-animation = "CycleAnim1"
-particleEmitter = "Fountain"
-
 
 [ParticleDescriptor]
 name        = "Smoke"
@@ -209,6 +194,61 @@ fadeInTime = 0.7
 fadeOutTime = 3.5
 totalLifetime = 5.5
 totalLifetimeRandomness = 0.0
+
+
+[ParticleDescriptor]
+name        = "Gunsmoke"
+velocity    = 0.0 5.0 0.0
+velocityAngleRandomness = 5
+acceleration = 0.0 -9.8 0.0
+initialRotationAngle = 0.0
+initialRotationAngleRandomness = 360.0
+initialSize = 0.25 0.25
+initialSizeRandomness = 0.05 0.05
+sizeGrowthVelocity = 1.1 1.1
+initialColor = 0.5 0.5 0.5 0.0
+midColor = 0.8 0.8 1.0 1.0
+endColor = 0.5 0.5 0.5 0.0
+emissionRate = 50.0
+fadeInTime = 0.05
+fadeOutTime = 0.175
+totalLifetime = 0.5
+totalLifetimeRandomness = 0.3
+
+
+[ParticleDescriptor]
+name        = Feather
+velocity    = 0.0 2.0 0.0
+velocityAngleRandomness = 360
+acceleration = 0.0 -9.8 0.0
+initialRotationAngle = 0.0
+initialRotationAngleRandomness = 360.0
+initialSize = 0.5 0.5
+initialSizeRandomness = 0.1 0.1
+sizeGrowthVelocity = 1.1 1.1
+initialColor = 0.5 0.5 0.5 0.0
+midColor = 0.8 0.8 1.0 1.0
+endColor = 0.5 0.5 0.5 0.0
+emissionRate = 16.0
+fadeInTime = 0.075
+fadeOutTime = 0.2625
+totalLifetime = 0.75
+totalLifetimeRandomness = 0.3
+
+[Cube]
+name     = "Cube"
+scaling  = 1.0 1.0 1.0
+position = 0.0 1.0 0.0
+rotation = 0.0 0.0 1.0 180
+animation = "BackAndForth"
+particleEmitter = "Gunsmoke"
+
+
+[Cube]
+name     = "Cube1"
+position = 0.0 6.0 0.0
+animation = "CycleAnim1"
+particleEmitter = "Fountain"
 
 [Sphere]
 name     = "Sphere"
@@ -265,7 +305,7 @@ key      = "KeyCycle12"  time = 8.0f
 name     = "Cube2"
 position = 0.0 4.0 0.0
 animation = "CycleAnim2"
-particleEmitter = "Fountain"
+particleEmitter = Feather
 
 [AnimationKey]
 name     = "KeyCycle13"
