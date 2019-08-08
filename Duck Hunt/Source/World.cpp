@@ -58,7 +58,7 @@ World::World()
 
     mpBillboardList = new BillboardList(2048, billboardTextureID);
 	mpFeatherBillboardList = new BillboardList(1024, featherBillboardTextureID);
-	mpFlakeBillboardList = new BillboardList(1024, flakeBillboardTextureID); 
+	mpFlakeBillboardList = new BillboardList(1024, flakeBillboardTextureID);
 	mpSnowBillboardList = new BillboardList(1024, snowBillboardTextureID);
     // TODO - You can un-comment out these 2 temporary billboards and particle system
     // That can help you debug billboards, you can set the billboard texture to billboardTest.png
@@ -407,7 +407,7 @@ const Camera* World::GetCurrentCamera() const
 void World::AddBillboard(Billboard* b, ci_string particleTexture)
 {
 	if(particleTexture == "Feather")mpFeatherBillboardList->AddBillboard(b);
-	else if (particleTexture == "Smoke")mpBillboardList->AddBillboard(b);
+	else if (particleTexture == "Smoke" || particleTexture == "Fountain")mpBillboardList->AddBillboard(b);
 	else if (particleTexture == "Snow")mpSnowBillboardList->AddBillboard(b);
 	else if (particleTexture == "Flake")mpFlakeBillboardList->AddBillboard(b);
 	/*
