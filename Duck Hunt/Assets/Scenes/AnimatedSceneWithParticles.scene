@@ -157,7 +157,7 @@ rotation = 1.0 0.0 0.0 90.0
 
 
 [ParticleDescriptor]
-name        = "Fountain"
+name        = Fountain
 velocity    = 0.0 14.0 0.0
 velocityAngleRandomness = 15
 acceleration = 0.0 -9.8 0.0
@@ -235,6 +235,45 @@ fadeOutTime = 0.2625
 totalLifetime = 0.75
 totalLifetimeRandomness = 0.3
 
+[ParticleDescriptor]
+name        = Flake
+velocity    = 0.0 2.0 0.0
+velocityAngleRandomness = 360
+acceleration = 0.0 -2 0.0
+initialRotationAngle = 0.0
+initialRotationAngleRandomness = 0
+initialSize = 0.75 0.75
+initialSizeRandomness = 0.1 0.1
+sizeGrowthVelocity = 0.1 0.1
+initialColor = 0.5 0.5 0.5 0.0
+midColor = 1.0 1.0 1.0 1.0
+endColor = 0.5 0.5 0.5 0.0
+emissionRate = 16.0
+fadeInTime = 0.2
+fadeOutTime = 0.2
+totalLifetime = 3.2
+totalLifetimeRandomness = 0.2
+
+[ParticleDescriptor]
+name        = Snow
+velocity    = 0.0 2.0 0.0
+velocityAngleRandomness = 360
+acceleration = 0.0 -2 0.0
+initialRotationAngle = 0.0
+initialRotationAngleRandomness = 0
+initialSize = 0.75 0.75
+initialSizeRandomness = 0.1 0.1
+sizeGrowthVelocity = 0.1 0.1
+initialColor = 0.5 0.5 0.5 0.0
+midColor = 1.0 1.0 1.0 1.0
+endColor = 0.5 0.5 0.5 0.0
+emissionRate = 16.0
+fadeInTime = 0.2
+fadeOutTime = 0.2
+totalLifetime = 3.2
+totalLifetimeRandomness = 0.2
+
+
 [Cube]
 name     = "Cube"
 scaling  = 1.0 1.0 1.0
@@ -248,7 +287,7 @@ particleEmitter = "Gunsmoke"
 name     = "Cube1"
 position = 0.0 6.0 0.0
 animation = "CycleAnim1"
-particleEmitter = "Fountain"
+particleEmitter = Fountain
 
 [Sphere]
 name     = "Sphere"
@@ -355,4 +394,6 @@ key      = "KeyCycle13"  time = 8.0f
 name     = "Cube3"
 position = 0.0 8.0 0.0
 animation = "CycleAnim3"
-particleEmitter = "Fountain"
+particleEmitter = Flake
+
+
