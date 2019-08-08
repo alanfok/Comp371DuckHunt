@@ -13,7 +13,7 @@
 #include "ParsingHelper.h"
 #include "Billboard.h"
 #include <vector>
-#include "Bullet.h"
+#include <string>
 
 class Camera;
 class Model;
@@ -21,8 +21,7 @@ class Animation;
 class AnimationKey;
 class ParticleSystem;
 class ParticleDescriptor;
-class Bullet;
-
+using namespace std;
 class World
 {
 public:
@@ -40,18 +39,17 @@ public:
     ParticleDescriptor* FindParticleDescriptor(ci_string name);
 
     const Camera* GetCurrentCamera() const;
-    void AddBillboard(Billboard* b, bool feather = false);
-    void RemoveBillboard(Billboard* b, bool feather = false);
+    void AddBillboard(Billboard* b, ci_string particleTexture);
+    void RemoveBillboard(Billboard* b, ci_string particleTexture);
     void AddParticleSystem(ParticleSystem* particleSystem);
     void RemoveParticleSystem(ParticleSystem* particleSystem);
     void AddParticleDescriptor(ParticleDescriptor* particleDescriptor);
-
-	list<Bullet*> bulletList;
 
 	glm::vec3 GetLightColor();
 	glm::vec3 GetLightAttenuation();
 	glm::vec4 GetLightPosition();
 
+   
 private:
     static World* instance;
     
@@ -67,5 +65,6 @@ private:
 
     BillboardList* mpBillboardList;
 	BillboardList* mpFeatherBillboardList;
-
+	BillboardList* mpSnowBillboardList;
+	BillboardList* mpFlakeBillboardList;
 };
