@@ -51,13 +51,15 @@ World::World()
 //    int billboardTextureID = TextureLoader::LoadTexture("../Assets/Textures/BillboardTest.bmp");
     int billboardTextureID = TextureLoader::LoadTexture("../Assets/Textures/Particle.png");
 	int featherBillboardTextureID = TextureLoader::LoadTexture("../Assets/Textures/Feather.png");
+	int flakeBillboardTextureID = TextureLoader::LoadTexture("../Assets/Textures/flake.png");
+	int snowBillboardTextureID = TextureLoader::LoadTexture("../Assets/Textures/snow.png");
 #endif
     assert(billboardTextureID != 0);
 
     mpBillboardList = new BillboardList(2048, billboardTextureID);
 	mpFeatherBillboardList = new BillboardList(1024, featherBillboardTextureID);
-
-    
+	mpFlakeBillboardList = new BillboardList(1024, flakeBillboardTextureID); 
+	mpSnowBillboardList = new BillboardList(1024, snowBillboardTextureID);
     // TODO - You can un-comment out these 2 temporary billboards and particle system
     // That can help you debug billboards, you can set the billboard texture to billboardTest.png
     /*    Billboard *b = new Billboard();
@@ -121,6 +123,8 @@ World::~World()
     
 	delete mpBillboardList;
 	delete mpFeatherBillboardList;
+	delete mpFlakeBillboardList;
+	delete mpSnowBillboardList;
 }
 
 World* World::GetInstance()
@@ -204,6 +208,8 @@ void World::Update(float dt)
     
     mpBillboardList->Update(dt);
 	mpFeatherBillboardList->Update(dt);
+	mpFlakeBillboardList->Update(dt);
+	mpSnowBillboardList->Update(dt);
 }
 
 void World::Draw()
@@ -283,6 +289,8 @@ void World::Draw()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     mpBillboardList->Draw();
 	mpFeatherBillboardList->Draw();
+	mpFlakeBillboardList->Draw();
+	mpSnowBillboardList->Draw();
     glDisable(GL_BLEND);
 
 
@@ -396,8 +404,19 @@ const Camera* World::GetCurrentCamera() const
      return mCamera[mCurrentCamera];
 }
 
-void World::AddBillboard(Billboard* b, bool feather)
+void World::AddBillboard(Billboard* b, ci_string particleTexture)
 {
+	if(particleTexture == "Feather")mpFeatherBillboardList->AddBillboard(b);
+	else if (particleTexture == "Smoke")mpBillboardList->AddBillboard(b);
+	else if (particleTexture == "Snow")mpSnowBillboardList->AddBillboard(b);
+	else if (particleTexture == "Flake")mpFlakeBillboardList->AddBillboard(b);
+	/*
+	switch (particleTexture) {
+	case "Feather": mpFeatherBillboardList->AddBillboard(b);
+	case "Smoke": mpBillboardList->AddBillboard(b);
+	case "Snow": mpSnowBillboardList->AddBillboard(b);
+	}
+	
 	if (!feather)
 	{
 		mpBillboardList->AddBillboard(b);
@@ -405,11 +424,16 @@ void World::AddBillboard(Billboard* b, bool feather)
 	else
 	{
 		mpFeatherBillboardList->AddBillboard(b);
-	}
+	}*/
 }
 
-void World::RemoveBillboard(Billboard* b, bool feather)
+void World::RemoveBillboard(Billboard* b, ci_string particleTexture)
 {
+	if (particleTexture == "Feather")mpFeatherBillboardList->RemoveBillboard(b);
+	else if (particleTexture == "Smoke")mpBillboardList->RemoveBillboard(b);
+	else if (particleTexture == "Snow")mpSnowBillboardList->RemoveBillboard(b);
+	else if (particleTexture == "Flake")mpFlakeBillboardList->RemoveBillboard(b);
+	/*
 	if (!feather)
 	{
 		mpBillboardList->RemoveBillboard(b);
@@ -417,7 +441,7 @@ void World::RemoveBillboard(Billboard* b, bool feather)
 	else
 	{
 		mpFeatherBillboardList->RemoveBillboard(b);
-	}
+	}*/
 }
 
 void World::AddParticleSystem(ParticleSystem* particleSystem)
