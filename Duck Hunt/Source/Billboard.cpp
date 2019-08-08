@@ -264,9 +264,9 @@ void BillboardList::Draw()
     glUniformMatrix4fv(VPMatrixLocation, 1, GL_FALSE, &VP[0][0]);
 
 	// Light Coefficients
-	const vec3 lightColor = World::GetInstance()->GetLightColor();
+	const vec3 lightColor = World::GetInstance()->GetBillboardLightColor();
 	const vec3 lightAttenuation = World::GetInstance()->GetLightAttenuation();
-	const vec4 lightPosition = World::GetInstance()->GetLightPosition(); // If w = 1.0f, we have a point light
+	const vec4 lightPosition = World::GetInstance()->GetBillboardLightPosition();
 	//const vec4 lightPosition = vec4(5.0f, -5.0f, 5.0f, 0.0f); // If w = 0.0f, we have a directional light
 
 	glUniform4f(WLPositionLocation, lightPosition.x, lightPosition.y, lightPosition.z, lightPosition.w);
