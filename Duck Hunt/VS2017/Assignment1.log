@@ -1,21 +1,5 @@
-﻿  Animation.cpp
-  Billboard.cpp
-  Camera.cpp
-  CubeModel.cpp
-  EventManager.cpp
-  FirstPersonCamera.cpp
-  main.cpp
-  Model.cpp
-  ParticleDescriptor.cpp
-  ParticleEmitter.cpp
-  ParticleSystem.cpp
-  Renderer.cpp
-  shader.cpp
-  sphere.cpp
-  SphereModel.cpp
-  StaticCamera.cpp
-  TextureLoader.cpp
-  World.cpp
+﻿  Bullet.cpp
+  Lighting.cpp
   Generating Code...
 LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
 LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
@@ -30,5 +14,5 @@ shader.obj : warning LNK4049: locally defined symbol ___glewGetShaderInfoLog imp
 shader.obj : warning LNK4049: locally defined symbol ___glewGetShaderiv imported
 shader.obj : warning LNK4049: locally defined symbol ___glewLinkProgram imported
 shader.obj : warning LNK4049: locally defined symbol ___glewShaderSource imported
-glew32s.lib(glew.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'glew32s.lib(glew.obj)' or at 'C:\Users\g_lermon\Desktop\gClermont_40057664_a3\A3\Part 2\Bin\vc120.pdb'; linking object as if no debug info
-  Assignment1.vcxproj -> C:\Users\g_lermon\Desktop\gClermont_40057664_a3\A3\Part 2\VS2017\/../Bin/Assignment1-Debug.exe
+glew32s.lib(glew.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'glew32s.lib(glew.obj)' or at 'C:\Users\r_lavio\Documents\Comp371DuckHunt-master\Comp371DuckHunt-master\Duck Hunt\Bin\vc120.pdb'; linking object as if no debug info
+  Assignment1.vcxproj -> C:\Users\r_lavio\Documents\Comp371DuckHunt-master\Comp371DuckHunt-master\Duck Hunt\VS2017\/../Bin/Assignment1-Debug.exe
