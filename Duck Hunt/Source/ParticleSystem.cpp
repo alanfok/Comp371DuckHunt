@@ -77,7 +77,12 @@ void ParticleSystem::Update(float dt)
 			World::GetInstance()->AddBillboard(&newParticle->billboard, mpDescriptor->name);
         
         // Set particle initial parameters
-        newParticle->billboard.position = mpEmitter->GetPosition();
+			if (mpDescriptor->name == "Flake" || mpDescriptor->name == "Snow")
+			{
+				newParticle->billboard.position = vec3(EventManager::GetRandomFloat(-20.0f, 20.0f), 20.0f, EventManager::GetRandomFloat(-20.0f, 10.0f));
+
+			}else newParticle->billboard.position = mpEmitter->GetPosition();
+        
         newParticle->billboard.size = mpDescriptor->initialSize + EventManager::GetRandomFloat(-1.0f, 1.0f) * mpDescriptor->initialSizeRandomness;
         newParticle->billboard.color = mpDescriptor->initialColor;
         newParticle->currentTime = 0.0f;
