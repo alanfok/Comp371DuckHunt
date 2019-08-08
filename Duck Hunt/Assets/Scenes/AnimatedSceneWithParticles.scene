@@ -125,3 +125,7 @@ position = 10.0 2.0 0.0
 animation = "CycleAnim"
 particleEmitter = "Smoke"
 
+[Object Duck]
+name     = "Duck"
+position = 0.0 0.0 0.0
+

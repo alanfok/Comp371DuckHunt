@@ -21,6 +21,7 @@
 #include <GLFW/glfw3.h>
 #include "EventManager.h"
 #include "TextureLoader.h"
+#include "ObjModel.h"
 
 #include "ParticleDescriptor.h"
 #include "ParticleEmitter.h"
@@ -309,6 +310,9 @@ void World::LoadScene(const char * scene_path)
                 SphereModel* sphere = new SphereModel();
                 sphere->Load(iss);
                 mModel.push_back(sphere);
+				//ObjModel* gun = new ObjModel("../Assets/Models/Gun.obj");
+				//gun->Load(iss);
+				//mModel.push_back(gun);
             }
 			else if ( result == "animationkey" )
 			{
@@ -328,6 +332,13 @@ void World::LoadScene(const char * scene_path)
                 psd->Load(iss);
                 AddParticleDescriptor(psd);
             }
+			else if (result.size() > 6 && result.substr(0, 6) == "Object")
+			{
+				std::string name = std::string(result.substr(7).c_str());
+				ObjModel* obj = new ObjModel("../Assets/Models/" + name + ".obj");
+				obj->Load(iss);
+				mModel.push_back(obj);
+			}
 			else if ( result.empty() == false && result[0] == '#')
 			{
 				// this is a comment line

@@ -2,8 +2,8 @@
 
 // Input vertex data, different for all executions of this shader.
 layout(location = 0) in vec3 vertexPosition_modelspace;
-layout(location = 1) in vec3 vertexNormal_modelspace;  // You will need this when you do lighting
-layout(location = 2) in vec3 vertexColor; 
+layout(location = 1) in vec2 vertexUV;
+layout(location = 2) in vec3 vertexNormal_modelspace; 
 
 // output to Fragment Shader
 out vec3 v_color;
@@ -30,7 +30,7 @@ void main()
 
 	// Output position of the vertex, in clip space : MVP * position
 	gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
-	v_color = vertexColor;
+	v_color = vec3(vertexUV.x, vertexUV.y, 0.5f);
 
 	// Prepare Data for Fragment Shader
 	// Should the normal be transformed?
