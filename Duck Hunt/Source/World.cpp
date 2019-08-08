@@ -165,16 +165,17 @@ void World::Update(float dt)
 		Renderer::SetShader(SHADER_BLUE);
 	}
 
-	// shooting
+	// shooting function
 	if (lastMouseState == false && glfwGetMouseButton(EventManager::GetWindow(), GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
     {
-		const float projectileSpeed = 25.0f;
-		mat4 viewMatrix = GetCurrentCamera()->GetViewProjectionMatrix();
-		vec3 camLookAt= vec3(viewMatrix[0][2], viewMatrix[1][2], viewMatrix[2][2])+ vec3(0.0f, 0.0f, -1.0f);;
-		vec3 cameraPosition = vec3(viewMatrix[0][3], viewMatrix[1][3], viewMatrix[2][3]);
+		const float projectileSpeed = 50.0f;
+		mat4 viewMatrix = glm::inverse(GetCurrentCamera()->GetViewMatrix());
+		vec3 camLookAt= -viewMatrix[2];
+		vec3 cameraPosition =viewMatrix[3];
+		std::cout << camLookAt.x << " " << camLookAt.y << " " << camLookAt.z << "\n";
 		Bullet *bt = new Bullet(cameraPosition, projectileSpeed *  camLookAt);
 		bulletList.push_back(bt);
-        printf("I like trains");
+        //printf("I like trains");
         cout << "clicked" << endl;
         lastMouseState = true;
     }
@@ -195,10 +196,11 @@ void World::Update(float dt)
         (*it)->Update(dt);
     }
 
+	//bullet
 	for (list<Bullet*>::iterator it = bulletList.begin(); it != bulletList.end(); ++it)
 	{
 		(*it)->Update(dt);
-		(*it)->Draw();
+	//	(*it)->Draw();
 	}
 
 	// Update current Camera
@@ -265,10 +267,17 @@ void World::Draw()
 	// Draw models
 	for (vector<Model*>::iterator it = mModel.begin(); it < mModel.end(); ++it)
 	{
+
 		(*it)->Draw();
 	}
 
 
+	//
+	for (list<Bullet*>::iterator it = bulletList.begin(); it != bulletList.end(); ++it)
+	{
+		//(*it)->Update(dt);
+		(*it)->Draw();
+	}
 	// Draw Path Lines
 	
 

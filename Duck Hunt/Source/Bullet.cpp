@@ -1,27 +1,27 @@
 #include "Bullet.h"
 
 
-list<Bullet>bulletList;
+//list<Bullet>bulletList;
 
 Bullet::Bullet(vec3 position, vec3 velocity)
 {
 	mPosition = position;
 	mVelocity = velocity;
 }
-void Bullet::Loading(vec3 cameraPosition,vec3 carmeraLookAt)
-{   
-	const float projectileSpeed = 25.0f;
-	bulletList.push_back(Bullet(cameraPosition, projectileSpeed * carmeraLookAt));
-}
-
-void Bullet::Shooting(float dt)
-{
-	for (list<Bullet>::iterator it = bulletList.begin(); it != bulletList.end(); ++it)
-	{
-		it->Update(dt);
-		it->Draw();
-	}
-}
+//void Bullet::Loading(vec3 cameraPosition,vec3 carmeraLookAt)
+//{   
+//	const float projectileSpeed = 25.0f;
+//	bulletList.push_back(Bullet(cameraPosition, projectileSpeed * carmeraLookAt));
+//}
+//
+//void Bullet::Shooting(float dt)
+//{
+//	for (list<Bullet>::iterator it = bulletList.begin(); it != bulletList.end(); ++it)
+//	{
+//		it->Update(dt);
+//		it->Draw();
+//	}
+//}
 
 void Bullet::Update(float dt)
 {
