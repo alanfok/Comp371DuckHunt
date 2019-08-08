@@ -14,6 +14,8 @@
 #include "Billboard.h"
 #include <vector>
 #include <string>
+#include "Bullet.h"
+
 
 class Camera;
 class Model;
@@ -59,6 +61,7 @@ private:
 	std::vector<Camera*> mCamera;
     std::vector<ParticleSystem*> mParticleSystemList;
     std::vector<ParticleDescriptor*> mParticleDescriptorList;
+	list<Bullet*> bulletList;
 	unsigned int mCurrentCamera;
 
 	bool lastMouseState = false;
