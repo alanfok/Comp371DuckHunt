@@ -82,12 +82,12 @@ void ParticleSystem::Update(float dt)
 		if (mpDescriptor->name != "Feather")
 		{
 			World::GetInstance()->AddBillboard(&newParticle->billboard);
-			std::cerr << "Other made" << std::endl;
+			//std::cerr << "Other made" << std::endl;
 		}
 		else
 		{
 			World::GetInstance()->AddBillboard(&newParticle->billboard, true);
-			std::cerr << "Feather made" << std::endl;
+			//std::cerr << "Feather made" << std::endl;
 		}
         
         // Set particle initial parameters
@@ -177,12 +177,12 @@ void ParticleSystem::Update(float dt)
 			if (mpDescriptor->name != "Feather")
 			{
 				World::GetInstance()->RemoveBillboard(&(p->billboard));
-				std::cerr << "Other deleted" << std::endl;
+				//std::cerr << "Other deleted" << std::endl;
 			}
 			else
 			{
 				World::GetInstance()->RemoveBillboard(&(p->billboard), true);
-				std::cerr << "Feather deleted" << std::endl;
+				//std::cerr << "Feather deleted" << std::endl;
 			}
             mParticleList.remove(*it++);
         }
