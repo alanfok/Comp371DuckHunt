@@ -431,10 +431,22 @@ const Camera* World::GetCurrentCamera() const
 
 void World::AddBillboard(Billboard* b, ci_string particleTexture)
 {
-	if(particleTexture == "Feather")mpFeatherBillboardList->AddBillboard(b);
-	else if (particleTexture == "Smoke" || particleTexture == "Fountain")mpBillboardList->AddBillboard(b);
-	else if (particleTexture == "Snow")mpSnowBillboardList->AddBillboard(b);
-	else if (particleTexture == "Flake")mpFlakeBillboardList->AddBillboard(b);
+	if (particleTexture == "Feather")
+	{
+		mpFeatherBillboardList->AddBillboard(b);
+	}
+	else if (particleTexture == "Snow")
+	{
+		mpSnowBillboardList->AddBillboard(b);
+	}
+	else if (particleTexture == "Flake")
+	{
+		mpFlakeBillboardList->AddBillboard(b);
+	}
+	else
+	{ //Gunsmoke goes in here
+		mpBillboardList->AddBillboard(b);
+	}
 	/*
 	switch (particleTexture) {
 	case "Feather": mpFeatherBillboardList->AddBillboard(b);
@@ -454,10 +466,22 @@ void World::AddBillboard(Billboard* b, ci_string particleTexture)
 
 void World::RemoveBillboard(Billboard* b, ci_string particleTexture)
 {
-	if (particleTexture == "Feather")mpFeatherBillboardList->RemoveBillboard(b);
-	else if (particleTexture == "Smoke")mpBillboardList->RemoveBillboard(b);
-	else if (particleTexture == "Snow")mpSnowBillboardList->RemoveBillboard(b);
-	else if (particleTexture == "Flake")mpFlakeBillboardList->RemoveBillboard(b);
+	if (particleTexture == "Feather")
+	{
+		mpFeatherBillboardList->RemoveBillboard(b);
+	}
+	else if (particleTexture == "Snow")
+	{
+		mpSnowBillboardList->RemoveBillboard(b);
+	}
+	else if (particleTexture == "Flake")
+	{
+		mpFlakeBillboardList->RemoveBillboard(b);
+	}
+	else
+	{ //Gunsmoke goes in here
+		mpBillboardList->RemoveBillboard(b);
+	}
 	/*
 	if (!feather)
 	{
