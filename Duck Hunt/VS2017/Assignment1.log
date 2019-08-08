@@ -1,6 +1,4 @@
-﻿  Bullet.cpp
-  Lighting.cpp
-  Generating Code...
+﻿  World.cpp
 LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
 LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
 shader.obj : warning LNK4049: locally defined symbol ___glewAttachShader imported
