@@ -40,15 +40,9 @@ ParticleSystem::~ParticleSystem()
 {
 	for (std::list<Particle*>::iterator it = mParticleList.begin(); it != mParticleList.end(); ++it)
 	{
-		if (mpDescriptor->name != "Feather")
-		{
-			World::GetInstance()->RemoveBillboard(&(*it)->billboard);
-		}
-		else
-		{
-			World::GetInstance()->RemoveBillboard(&(*it)->billboard, true);
-		}
-		delete *it;
+
+			World::GetInstance()->RemoveBillboard(&(*it)->billboard, mpDescriptor->name);
+
 	}
 
     for (std::list<Particle*>::iterator it = mInactiveParticles.begin(); it != mInactiveParticles.end(); ++it)
@@ -79,16 +73,8 @@ void ParticleSystem::Update(float dt)
         mInactiveParticles.pop_back();
 		/*std::cout << mpDescriptor->name[0] << mpDescriptor->name[1] << mpDescriptor->name[2]
 			<< mpDescriptor->name[3] << mpDescriptor->name[4] << mpDescriptor->name[5] << mpDescriptor->name[6] << std::endl;*/
-		if (mpDescriptor->name != "Feather")
-		{
-			World::GetInstance()->AddBillboard(&newParticle->billboard);
-			std::cerr << "Other made" << std::endl;
-		}
-		else
-		{
-			World::GetInstance()->AddBillboard(&newParticle->billboard, true);
-			std::cerr << "Feather made" << std::endl;
-		}
+
+			World::GetInstance()->AddBillboard(&newParticle->billboard, mpDescriptor->name);
         
         // Set particle initial parameters
         newParticle->billboard.position = mpEmitter->GetPosition();
@@ -174,16 +160,7 @@ void ParticleSystem::Update(float dt)
         {
             mInactiveParticles.push_back(*it);
             
-			if (mpDescriptor->name != "Feather")
-			{
-				World::GetInstance()->RemoveBillboard(&(p->billboard));
-				std::cerr << "Other deleted" << std::endl;
-			}
-			else
-			{
-				World::GetInstance()->RemoveBillboard(&(p->billboard), true);
-				std::cerr << "Feather deleted" << std::endl;
-			}
+				World::GetInstance()->RemoveBillboard(&(p->billboard), mpDescriptor->name);
             mParticleList.remove(*it++);
         }
     }
