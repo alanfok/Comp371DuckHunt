@@ -177,7 +177,7 @@ totalLifetimeRandomness = 0.3
 
 
 [ParticleDescriptor]
-name        = "Smoke"
+name        = Smoke
 velocity = 0.0 0.1 0.0
 velocityAngleRandomness = 4.0
 acceleration = 0.0 0.15 0.0
@@ -197,7 +197,7 @@ totalLifetimeRandomness = 0.0
 
 
 [ParticleDescriptor]
-name        = "Gunsmoke"
+name        = Gunsmoke
 velocity    = 0.0 5.0 0.0
 velocityAngleRandomness = 5
 acceleration = 0.0 -9.8 0.0
@@ -280,7 +280,7 @@ scaling  = 1.0 1.0 1.0
 position = 0.0 1.0 0.0
 rotation = 0.0 0.0 1.0 180
 animation = "BackAndForth"
-particleEmitter = "Gunsmoke"
+particleEmitter = Gunsmoke
 
 
 [Cube]
@@ -293,7 +293,7 @@ particleEmitter = Fountain
 name     = "Sphere"
 position = 10.0 2.0 0.0
 animation = "CycleAnim"
-particleEmitter = "Smoke"
+particleEmitter = Smoke
 
 [AnimationKey]
 name     = "KeyCycle12"
