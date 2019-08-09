@@ -25,7 +25,8 @@ uniform mat4 ProjectonTransform;
 uniform vec4 WorldLightPosition; // w = 0, so directional light
 uniform vec4 BackLightPosition; // w = 0, so directional light
 uniform vec4 GunLightPosition; // w = 1, so Point light
-uniform vec4 DistanceFog;
+uniform vec4 DistanceFogColor;
+uniform vec4 DistanceFogDetails;
 
 
 void main()

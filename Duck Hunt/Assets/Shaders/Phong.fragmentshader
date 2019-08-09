@@ -7,7 +7,8 @@ uniform vec4 materialCoefficients; // x: ambient   y: diffuse   z: specular   w:
 uniform vec4 lightColor; //x,y,z: color		w: minimum ambient
 uniform vec3 lightAttenuation; // x: kC  y: kL  z: kQ
 uniform vec3 gunLightColor;
-uniform vec4 distanceFog;
+uniform vec3 distanceFogColor;
+uniform vec3 distanceFogDetails; //x: start distance, y: lerp finish distance, z: alpha
 
 
 // Inputs
@@ -121,13 +122,17 @@ void main()
 	vec3 finalColor = sunlightColor + backlightColor + gunLightColor;
 
 	//Distance Fog
-	vec3 distanceFogColor = vec3(distanceFog);
-	float fogStartDistance = distanceFog.w;
 	float vertexDistance = length(eyeVector);
 
-	if (vertexDistance > fogStartDistance)
+	if (vertexDistance > distanceFogDetails.x)
 	{
+		float fogLerp = min(1.0f, (vertexDistance - distanceFogDetails.x) / (distanceFogDetails.y - distanceFogDetails.x)) * distanceFogDetails.z;
+
+		color = distanceFogColor * fogLerp + (1 - fogLerp) * finalColor;
+	}
+	else
+	{
+		color = finalColor;
 	}
 
-	color = finalColor;
 }
