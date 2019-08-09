@@ -74,6 +74,7 @@ private:
 	unsigned int mCurrentCamera;
 
 	bool lastMouseState = false;
+	bool clicked = false;
 
     BillboardList* mpBillboardList;
 	BillboardList* mpFeatherBillboardList;

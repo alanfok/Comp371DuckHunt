@@ -38,4 +38,6 @@ private:
 
 	float ambient;
 	glm::vec3 ambientColor;
+
+	int timer = 0;
 };

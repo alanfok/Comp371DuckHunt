@@ -172,6 +172,7 @@ void World::Update(float dt)
 	mInverseViewMatrix = glm::inverse(GetCurrentCamera()->GetViewMatrix());
 
 	// shooting function
+	clicked = false;
 	if (lastMouseState == false && glfwGetMouseButton(EventManager::GetWindow(), GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
     {
 		const float projectileSpeed = 50.0f;
@@ -184,6 +185,7 @@ void World::Update(float dt)
         //printf("I like trains");
         cout << "clicked" << endl;
         lastMouseState = true;
+		clicked = true;
     }
 
     if (glfwGetMouseButton(EventManager::GetWindow(), GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE)
@@ -590,5 +592,5 @@ glm::mat4 World::GetInverseWorldMatrix()
 
 bool World::IsShooting()
 {
-	return lastMouseState;
+	return clicked;
 }
