@@ -7,6 +7,7 @@ uniform vec4 materialCoefficients; // x: ambient   y: diffuse   z: specular   w:
 uniform vec4 lightColor; //x,y,z: color		w: minimum ambient
 uniform vec3 lightAttenuation; // x: kC  y: kL  z: kQ
 uniform vec3 gunLightColor;
+uniform vec4 distanceFog;
 
 
 // Inputs
@@ -116,7 +117,17 @@ void main()
 
 	// Calculate the final color. Specular is kept outside as it is a direct reflection of the light, rather than a direct manifestation of the material's color. Better result.
 	vec3 gunLightColor = v_color * (diffuse + ambient) + specular; 
+	
+	vec3 finalColor = sunlightColor + backlightColor + gunLightColor;
 
+	//Distance Fog
+	vec3 distanceFogColor = vec3(distanceFog);
+	float fogStartDistance = distanceFog.w;
+	float vertexDistance = length(eyeVector);
 
-	color = sunlightColor + backlightColor + gunLightColor;
+	if (vertexDistance > fogStartDistance)
+	{
+	}
+
+	color = finalColor;
 }
