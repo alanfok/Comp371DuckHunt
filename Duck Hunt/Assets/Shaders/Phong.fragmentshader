@@ -4,8 +4,9 @@
 // Light and Material Uniform Variables
 uniform vec4 materialCoefficients; // x: ambient   y: diffuse   z: specular   w: specular exponent
 
-uniform vec3 lightColor;
+uniform vec4 lightColor; //x,y,z: color		w: minimum ambient
 uniform vec3 lightAttenuation; // x: kC  y: kL  z: kQ
+uniform vec3 gunLightColor;
 
 
 // Inputs
@@ -16,6 +17,8 @@ in vec3 eyeVector;       // Vector from the vertex to the Camera in View Space
 in vec4 lightVector;     // Vector from the vertex to the Light in View Space
 						 // Length of lightVector is the distance between light and vertex
 						 // if w = 1: Point light, if w = 0: directional light
+in vec4 backlightVector;
+in vec4 gunLightVector;
 
 // Ouput data
 out vec3 color;
@@ -26,9 +29,15 @@ void main()
 	// Implment Phong Shading based on the parameters above
 	// Remember that directional light don't have attenuation
 
+	
+
 	// Calculate normalized vectors
 	vec3 nNormal = normalize(normal);
 	vec3 nEyeVector = normalize(eyeVector);
+
+	vec3 lightColorV3 = vec3(lightColor);
+
+	//Sunlight
 	vec3 nLightVector = normalize(vec3(lightVector));
 
 	// Calculate the Attenuation. Attenuation is used here, instead of in part 1, since the light coefficients are correctly set for a good effect.
@@ -38,19 +47,76 @@ void main()
 		attenuation = 1.0f / (lightAttenuation.x + distance*lightAttenuation.y + distance*distance*lightAttenuation.z);
 	}
 	
-	// Calculate the Ambiant.
-	vec3 ambiant = materialCoefficients.x * lightColor;
+	// Calculate the Ambient.
+	float minimumAmbient = lightColor.w;
+	vec3 ambient = max(materialCoefficients.x, minimumAmbient) * lightColorV3;
 	
 	// Calculate the Diffuse.
-	vec3 diffuse = materialCoefficients.y * attenuation * lightColor * max(0.0f, dot(nNormal, nLightVector));
+	vec3 diffuse = materialCoefficients.y * attenuation * lightColorV3 * max(0.0f, dot(nNormal, nLightVector));
 
 	// Calculate the Specular.
 	vec3 reflectDirection = 2 * dot(nNormal, nLightVector) * nNormal - nLightVector;
 	vec3 specular = vec3(0.0f);
 	if (materialCoefficients.z > 0.0f && materialCoefficients.w > 0.0f) { // Having both at 0 for the cube caused graphical issues.
-		specular = materialCoefficients.z * attenuation * lightColor * pow(max(0.0f, dot(nEyeVector, reflectDirection)), materialCoefficients.w);
+		specular = materialCoefficients.z * attenuation * lightColorV3 * pow(max(0.0f, dot(nEyeVector, reflectDirection)), materialCoefficients.w);
 	}
 
 	// Calculate the final color. Specular is kept outside as it is a direct reflection of the light, rather than a direct manifestation of the material's color. Better result.
-	color = v_color * (diffuse + ambiant) + specular; 
+	vec3 sunlightColor = v_color * (diffuse + ambient) + specular;
+
+
+	//Backlight
+	vec3 nBackLightVector = normalize(vec3(backlightVector));
+
+	// Calculate the Attenuation. Attenuation is used here, instead of in part 1, since the light coefficients are correctly set for a good effect.
+	attenuation = 1.0f;
+	if (lightVector.w > 0.5f) { // w does not always return exactly 1.0f, for some reason.
+		float distance = length(vec3(backlightVector));
+		attenuation = 1.0f / (lightAttenuation.x + distance*lightAttenuation.y + distance*distance*lightAttenuation.z);
+	}
+	
+	// Skip the Ambient.
+	
+	// Calculate the Diffuse.
+	diffuse = materialCoefficients.y * attenuation * lightColorV3 * max(0.0f, dot(nNormal, nBackLightVector));
+
+	// Calculate the Specular.
+	reflectDirection = 2 * dot(nNormal, nBackLightVector) * nNormal - nBackLightVector;
+	specular = vec3(0.0f);
+	if (materialCoefficients.z > 0.0f && materialCoefficients.w > 0.0f) { // Having both at 0 for the cube caused graphical issues.
+		specular = materialCoefficients.z * attenuation * lightColorV3 * pow(max(0.0f, dot(nEyeVector, reflectDirection)), materialCoefficients.w);
+	}
+
+	// Calculate the final color. Specular is kept outside as it is a direct reflection of the light, rather than a direct manifestation of the material's color. Better result.
+	vec3 backlightColor = v_color * diffuse + specular;
+
+	
+	//GunLight
+	vec3 nGunLightVector = normalize(vec3(gunLightVector));
+
+	// Calculate the Attenuation. Attenuation is used here, instead of in part 1, since the light coefficients are correctly set for a good effect.
+	attenuation = 1.0f;
+	if (gunLightVector.w > 0.5f) { // w does not always return exactly 1.0f, for some reason.
+		float distance = length(vec3(gunLightVector));
+		attenuation = 1.0f / (lightAttenuation.x + distance*lightAttenuation.y + distance*distance*lightAttenuation.z);
+	}
+	
+	// Calculate the Ambient.
+	ambient = materialCoefficients.x * gunLightColor;
+	
+	// Calculate the Diffuse.
+	diffuse = materialCoefficients.y * attenuation * gunLightColor * max(0.0f, dot(nNormal, nGunLightVector));
+
+	// Calculate the Specular.
+	reflectDirection = 2 * dot(nNormal, nGunLightVector) * nNormal - nGunLightVector;
+	specular = vec3(0.0f);
+	if (materialCoefficients.z > 0.0f && materialCoefficients.w > 0.0f) { // Having both at 0 for the cube caused graphical issues.
+		specular = materialCoefficients.z * attenuation * gunLightColor * pow(max(0.0f, dot(nEyeVector, reflectDirection)), materialCoefficients.w);
+	}
+
+	// Calculate the final color. Specular is kept outside as it is a direct reflection of the light, rather than a direct manifestation of the material's color. Better result.
+	vec3 gunLightColor = v_color * (diffuse + ambient) + specular; 
+
+
+	color = sunlightColor + backlightColor + gunLightColor;
 }

@@ -249,17 +249,26 @@ void World::Draw()
 	GLuint WLPositionLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "WorldLightPosition");
 	GLuint LColorLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "lightColor");
 	GLuint LAttenuationLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "lightAttenuation");
+	GLuint BLPositionLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "BackLightPosition");
+	GLuint GLPositionLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "GunLightPosition");
+	GLuint GLColorLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "gunLightColor");
 
 	// Light Coefficients
 	const vec3 lightColor = GetLightColor();//GetGunLightColor();//GetLightColor();
 	const vec3 lightAttenuation = GetLightAttenuation();
+	const float minAmbient = GetMinimumAmbient();
 	const vec4 lightPosition = GetLightPosition();//GetGunLightPosition();//GetLightPosition(); // If w = 1.0f, we have a point light
 	//const vec4 lightPosition = vec4(5.0f, -5.0f, 5.0f, 0.0f); // If w = 0.0f, we have a directional light
-
+	const vec4 backlightPosition = GetBackLightPosition();
+	const vec3 gunLightColor = GetGunLightColor();
+	const vec4 gunLightPosition = GetGunLightPosition();
 
 	glUniform4f(WLPositionLocation, lightPosition.x, lightPosition.y, lightPosition.z, lightPosition.w);
-	glUniform3f(LColorLocation, lightColor.r, lightColor.g, lightColor.b);
+	glUniform4f(LColorLocation, lightColor.r, lightColor.g, lightColor.b, minAmbient);
 	glUniform3f(LAttenuationLocation, lightAttenuation.x, lightAttenuation.y, lightAttenuation.z);
+	glUniform4f(BLPositionLocation, backlightPosition.x, backlightPosition.y, backlightPosition.z, backlightPosition.w);
+	glUniform4f(GLPositionLocation, gunLightPosition.x, gunLightPosition.y, gunLightPosition.z, gunLightPosition.w);
+	glUniform3f(GLColorLocation, gunLightColor.r, gunLightColor.g, gunLightColor.b);
 
 	// Send the view projection constants to the shader
 	mat4 VP = mCamera[mCurrentCamera]->GetViewProjectionMatrix();
@@ -385,9 +394,7 @@ void World::LoadScene(const char * scene_path)
             }
 			else if (result == "lighting")
 			{
-				delete mpWorldLighting;
-				mpWorldLighting = new Lighting(); //FIXIT make it load anything
-				//mpWorldLighting->Load(iss);
+				//mpWorldLighting->Load(iss); //Make it not hard-coded!
 			}
 			else if ( result.empty() == false && result[0] == '#')
 			{
@@ -542,6 +549,11 @@ vec3 World::GetLightAttenuation() {
 vec4 World::GetLightPosition() {
 	//return vec4(0.0f, 10.0f, 20.0f, 1.0f);
 	return mpWorldLighting->GetSunlightVector();
+}
+
+vec4 World::GetBackLightPosition()
+{
+	return mpWorldLighting->GetBacklightVector();
 }
 
 float World::GetMinimumAmbient()
