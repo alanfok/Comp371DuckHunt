@@ -75,6 +75,8 @@ World::World()
      mpBillboardList->AddBillboard(b);
      mpBillboardList->AddBillboard(b2);
      */    // TMP
+
+	mpWorldLighting = new Lighting();
 }
 
 World::~World()
@@ -125,6 +127,8 @@ World::~World()
 	delete mpFeatherBillboardList;
 	delete mpFlakeBillboardList;
 	delete mpSnowBillboardList;
+
+	delete mpWorldLighting;
 }
 
 World* World::GetInstance()
@@ -165,13 +169,15 @@ void World::Update(float dt)
 		Renderer::SetShader(SHADER_BLUE);
 	}
 
+	mInverseViewMatrix = glm::inverse(GetCurrentCamera()->GetViewMatrix());
+
 	// shooting function
 	if (lastMouseState == false && glfwGetMouseButton(EventManager::GetWindow(), GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
     {
 		const float projectileSpeed = 50.0f;
-		mat4 viewMatrix = glm::inverse(GetCurrentCamera()->GetViewMatrix());
-		vec3 camLookAt= -viewMatrix[2];
-		vec3 cameraPosition =viewMatrix[3];
+		//mat4 viewMatrix = glm::inverse(GetCurrentCamera()->GetViewMatrix());
+		vec3 camLookAt= -mInverseViewMatrix[2];
+		vec3 cameraPosition = mInverseViewMatrix[3];
 		std::cout << camLookAt.x << " " << camLookAt.y << " " << camLookAt.z << "\n";
 		Bullet *bt = new Bullet(cameraPosition, projectileSpeed *  camLookAt);
 		bulletList.push_back(bt);
@@ -200,7 +206,6 @@ void World::Update(float dt)
 	for (list<Bullet*>::iterator it = bulletList.begin(); it != bulletList.end(); ++it)
 	{
 		(*it)->Update(dt);
-	//	(*it)->Draw();
 	}
 
 	// Update current Camera
@@ -225,6 +230,8 @@ void World::Update(float dt)
 	mpFeatherBillboardList->Update(dt);
 	mpFlakeBillboardList->Update(dt);
 	mpSnowBillboardList->Update(dt);
+
+	mpWorldLighting->Update();
 }
 
 void World::Draw()
@@ -244,10 +251,11 @@ void World::Draw()
 	GLuint LAttenuationLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "lightAttenuation");
 
 	// Light Coefficients
-	const vec3 lightColor = GetLightColor();
+	const vec3 lightColor = GetLightColor();//GetGunLightColor();//GetLightColor();
 	const vec3 lightAttenuation = GetLightAttenuation();
-	const vec4 lightPosition = GetLightPosition(); // If w = 1.0f, we have a point light
+	const vec4 lightPosition = GetLightPosition();//GetGunLightPosition();//GetLightPosition(); // If w = 1.0f, we have a point light
 	//const vec4 lightPosition = vec4(5.0f, -5.0f, 5.0f, 0.0f); // If w = 0.0f, we have a directional light
+
 
 	glUniform4f(WLPositionLocation, lightPosition.x, lightPosition.y, lightPosition.z, lightPosition.w);
 	glUniform3f(LColorLocation, lightColor.r, lightColor.g, lightColor.b);
@@ -267,15 +275,12 @@ void World::Draw()
 	// Draw models
 	for (vector<Model*>::iterator it = mModel.begin(); it < mModel.end(); ++it)
 	{
-
 		(*it)->Draw();
 	}
 
-
-	//
+	//Drwa bullets
 	for (list<Bullet*>::iterator it = bulletList.begin(); it != bulletList.end(); ++it)
 	{
-		//(*it)->Update(dt);
 		(*it)->Draw();
 	}
 	// Draw Path Lines
@@ -378,6 +383,12 @@ void World::LoadScene(const char * scene_path)
                 psd->Load(iss);
                 AddParticleDescriptor(psd);
             }
+			else if (result == "lighting")
+			{
+				delete mpWorldLighting;
+				mpWorldLighting = new Lighting(); //FIXIT make it load anything
+				//mpWorldLighting->Load(iss);
+			}
 			else if ( result.empty() == false && result[0] == '#')
 			{
 				// this is a comment line
@@ -509,16 +520,43 @@ void World::AddParticleDescriptor(ParticleDescriptor* particleDescriptor)
     mParticleDescriptorList.push_back(particleDescriptor);
 }
 
+vec3 World::GetLightColor() {
+	return mpWorldLighting->GetSunlightColor();
+}
+
+vec3 World::GetBillboardLightColor() {
+	return mpWorldLighting->GetBillboardLightColor();
+}
+
+vec4 World::GetBillboardLightPosition() {
+	mat4 viewMatrix = GetCurrentCamera()->GetViewMatrix();
+	vec3 camLookAt(viewMatrix[0][2], viewMatrix[1][2], viewMatrix[2][2]);
+
+	return vec4(-camLookAt, 0.0f);
+}
+
 vec3 World::GetLightAttenuation() {
 	return vec3(0.05f, 0.02, 0.002f);
 }
 
-vec3 World::GetLightColor() {
-	return vec3(1.0f, 1.0f, 1.0f);
+vec4 World::GetLightPosition() {
+	//return vec4(0.0f, 10.0f, 20.0f, 1.0f);
+	return mpWorldLighting->GetSunlightVector();
 }
 
-vec4 World::GetLightPosition() {
-	return vec4(0.0f, 10.0f, 20.0f, 1.0f);
+float World::GetMinimumAmbient()
+{
+	return mpWorldLighting->GetAmbientLightingFloat();
+}
+
+vec4 World::GetGunLightPosition()
+{
+	return mpWorldLighting->GetGunLightingVector();
+}
+
+vec3 World::GetGunLightColor()
+{
+	return mpWorldLighting->GetGunLightingColor();
 }
 
 ParticleDescriptor* World::FindParticleDescriptor(ci_string name)
@@ -531,4 +569,14 @@ ParticleDescriptor* World::FindParticleDescriptor(ci_string name)
         }
     }
     return nullptr;
+}
+
+glm::mat4 World::GetInverseWorldMatrix()
+{
+	return mInverseViewMatrix;
+}
+
+bool World::IsShooting()
+{
+	return lastMouseState;
 }

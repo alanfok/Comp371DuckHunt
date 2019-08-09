@@ -15,6 +15,7 @@
 #include <vector>
 #include <string>
 #include "Bullet.h"
+#include "Lighting.h"
 
 
 class Camera;
@@ -47,11 +48,18 @@ public:
     void RemoveParticleSystem(ParticleSystem* particleSystem);
     void AddParticleDescriptor(ParticleDescriptor* particleDescriptor);
 
-	glm::vec3 GetLightColor();
-	glm::vec3 GetLightAttenuation();
+	glm::vec3 GetLightAttenuation(); //Used for specular lighting
 	glm::vec4 GetLightPosition();
+	glm::vec3 GetLightColor();
+	glm::vec4 GetBillboardLightPosition(); //Always the camera lookAt vector so that billboards are always drawn fully lit
+	glm::vec3 GetBillboardLightColor();
+	glm::vec4 GetGunLightPosition(); //Always miles away unless shooting, in which case right in front of the camera at the tip of the gun
+	glm::vec3 GetGunLightColor();
+	float GetMinimumAmbient();
+	bool IsShooting();
 
-   
+	glm::mat4 GetInverseWorldMatrix();
+
 private:
     static World* instance;
     
@@ -70,4 +78,8 @@ private:
 	BillboardList* mpFeatherBillboardList;
 	BillboardList* mpSnowBillboardList;
 	BillboardList* mpFlakeBillboardList;
+
+	glm::mat4 mInverseViewMatrix;
+
+	Lighting* mpWorldLighting;
 };

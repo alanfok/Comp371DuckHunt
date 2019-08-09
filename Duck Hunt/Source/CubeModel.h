@@ -10,6 +10,7 @@
 #pragma once
 
 #include "Model.h"
+#include "World.h"
 
 class CubeModel : public Model
 {
