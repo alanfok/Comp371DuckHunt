@@ -3,7 +3,7 @@
 
 //list<Bullet>bulletList;
 
-Bullet::Bullet(vec3 position, vec3 velocity, vec3 size) : SphereModel(size)
+Bullet::Bullet(vec3 position, vec3 velocity, vec3 size) : SphereModel(size, vec3(1.0f, 0.725f, 0.239f), vec4(0.01f, 0.5f, 0.9f, 50.0f))
 {
 	mPosition = position;
 	mVelocity = velocity;

@@ -11,11 +11,11 @@
 
 #include "Model.h"
 
-
 class SphereModel : public Model
 {
 public:
-	SphereModel(glm::vec3 size = glm::vec3(1.0f, 1.0f, 1.0f));
+	SphereModel(glm::vec3 size = glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3 color = glm::vec3(1.0f, 0.05f, 0.05f), glm::vec4 materials = glm::vec4(0.01f, 0.8f, 0.3f, 50.0f));
+
     virtual ~SphereModel(void);
 
     virtual void Update(float dt);
