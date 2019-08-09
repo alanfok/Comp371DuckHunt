@@ -1,5 +1,5 @@
 # Comp371DuckHunt
-member/n
+member\n
 Maryam Eskandari 
 Amrou Abdelhadi
 Robert Laviolette
