@@ -1,9 +1,9 @@
 #include "Bullet.h"
-
+#include "World.h"
 
 //list<Bullet>bulletList;
 
-Bullet::Bullet(vec3 position, vec3 velocity)
+Bullet::Bullet(vec3 position, vec3 velocity, vec3 size) : SphereModel(size)
 {
 	mPosition = position;
 	mVelocity = velocity;
@@ -31,13 +31,32 @@ void Bullet::Update(float dt)
 void Bullet::Draw() {
 	// this is a bit of a shortcut, since we have a single vbo, it is already bound
 	// let's just set the world matrix in the vertex shader
+	// Draw the Vertex Buffer
+	// Note this draws a Sphere
+	// The Model View Projection transforms are computed in the Vertex Shader
+	glBindVertexArray(mVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, mVBO);
+
+	GLuint WorldMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "WorldTransform");
+	mat4 worldMatrix = translate(mat4(1.0f), mPosition) * rotate(mat4(1.0f), radians(180.0f), vec3(0.0f, 1.0f, 0.0f)) * scale(mat4(1.0f), vec3(0.2f, 0.2f, 0.2f));
+	glUniformMatrix4fv(WorldMatrixLocation, 1, GL_FALSE, &worldMatrix[0][0]);
+
+	GLuint MaterialLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "materialCoefficients");
+	//float ambient = glm::max(materialCoefficients.x, World::GetInstance()->GetMinimumAmbient());
+	glUniform4f(MaterialLocation, materialCoefficients.x, materialCoefficients.y, materialCoefficients.z, materialCoefficients.w);
+
+	// Draw the triangles !
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, numOfVertices);
+	/*
 	int vbo = createVertexBufferObject();
 	GLuint WorldMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "WorldTransform");
 	mat4 worldMatrix = translate(mat4(1.0f), mPosition) * rotate(mat4(1.0f), radians(180.0f), vec3(0.0f, 1.0f, 0.0f)) * scale(mat4(1.0f), vec3(0.2f, 0.2f, 0.2f));
 	glUniformMatrix4fv(WorldMatrixLocation, 1, GL_FALSE, &worldMatrix[0][0]);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
+	*/
 }
 
+/*
 int Bullet::createVertexBufferObject()
 {
 	// Cube model
@@ -126,7 +145,7 @@ int Bullet::createVertexBufferObject()
 
 	return vertexBufferObject;
 }
-
+*/
 Bullet::~Bullet()
 {
 }

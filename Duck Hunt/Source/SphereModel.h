@@ -10,7 +10,7 @@
 #pragma once
 
 #include "Model.h"
-#include "World.h"
+
 
 class SphereModel : public Model
 {
@@ -23,8 +23,6 @@ public:
     
 protected:
     virtual bool ParseLine(const std::vector<ci_string> &token);
-
-private:
     // The vertex format could be different for different types of models
     struct Vertex
     {

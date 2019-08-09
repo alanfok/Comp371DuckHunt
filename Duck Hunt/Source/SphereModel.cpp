@@ -9,6 +9,8 @@
 
 #include "SphereModel.h"
 #include "Renderer.h"
+#include "World.h"
+
 
 using namespace glm;
 
@@ -1347,8 +1349,8 @@ void SphereModel::Draw()
     glUniformMatrix4fv(WorldMatrixLocation, 1, GL_FALSE, &GetWorldMatrix()[0][0]);
 
 	GLuint MaterialLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "materialCoefficients");
-	//float ambient = glm::max(materialCoefficients.x, World::GetInstance()->GetMinimumAmbient());
-	glUniform4f(MaterialLocation, materialCoefficients.x, materialCoefficients.y, materialCoefficients.z, materialCoefficients.w);
+	float ambient = glm::max(materialCoefficients.x, World::GetInstance()->GetMinimumAmbient());
+	glUniform4f(MaterialLocation, ambient, materialCoefficients.y, materialCoefficients.z, materialCoefficients.w);
     
     // Draw the triangles !
     glDrawArrays(GL_TRIANGLE_STRIP, 0, numOfVertices);

@@ -12,21 +12,19 @@
 #include <glm/gtc/matrix_transform.hpp> // include this to create transformation matrices
 #include <glm/common.hpp>
 #include "Renderer.h"
+#include "SphereModel.h"
 
 class Renderer;
 
 using namespace glm;
 using namespace std;
 
-class Bullet
+class Bullet :public SphereModel
 {
 public:
-	Bullet(vec3 position, vec3 velocity);
-	void Loading(vec3 position, vec3 carmeraLookAt);
-    void Shooting(float dt);
-	void Update(float dt);
+	Bullet(vec3 position, vec3 velocity, glm::vec3 size = glm::vec3(1.0f, 1.0f, 1.0f));
+	virtual void Update(float dt);
 	void Draw();
-	int createVertexBufferObject();
 	~Bullet();
 private:
 	GLuint mWorldMatrixLocation;
