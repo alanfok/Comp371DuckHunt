@@ -15,9 +15,11 @@ Lighting::Lighting()
 
 	ambient = 0.3f;
 	ambientColor = glm::vec3(1.0f, 1.0f, 1.0f);
+
+	distanceFog = glm::vec4(0.5f, 0.5f, 1.0f, 25.0f);
 }
 
-Lighting::Lighting(glm::vec4 sun, glm::vec3 sunColor, glm::vec4 back, glm::vec3 billboardColor, glm::vec3 gunColor, float amb, glm::vec3 ambColor)
+Lighting::Lighting(glm::vec4 sun, glm::vec3 sunColor, glm::vec4 back, glm::vec3 billboardColor, glm::vec3 gunColor, float amb, glm::vec3 ambColor, glm::vec4 fog)
 {
 	sunlight = sun;
 	sunlightColor = sunColor;
@@ -31,6 +33,8 @@ Lighting::Lighting(glm::vec4 sun, glm::vec3 sunColor, glm::vec4 back, glm::vec3 
 
 	ambient = amb;
 	ambientColor = ambColor;
+
+	distanceFog = fog;
 }
 
 
@@ -77,6 +81,11 @@ float Lighting::GetAmbientLightingFloat()
 glm::vec3 Lighting::GetAmbientLightingColor()
 {
 	return ambientColor;
+}
+
+glm::vec4 Lighting::GetDistanceFog()
+{
+	return distanceFog;
 }
 
 void Lighting::Update()
