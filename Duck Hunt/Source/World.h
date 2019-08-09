@@ -58,7 +58,8 @@ public:
 	glm::vec3 GetGunLightColor();
 	float GetMinimumAmbient();
 	bool IsShooting();
-	glm::vec4 GetDistanceFog();
+	glm::vec3 GetDistanceFogColor();
+	glm::vec3 GetDistanceFogDetails();
 
 	glm::mat4 GetInverseWorldMatrix();
 

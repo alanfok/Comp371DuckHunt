@@ -77,6 +77,7 @@ World::World()
      */    // TMP
 
 	mpWorldLighting = new Lighting();
+	glClearColor(GetDistanceFogColor().x, GetDistanceFogColor().y, GetDistanceFogColor().z, 1.0f);
 }
 
 World::~World()
@@ -254,7 +255,8 @@ void World::Draw()
 	GLuint BLPositionLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "BackLightPosition");
 	GLuint GLPositionLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "GunLightPosition");
 	GLuint GLColorLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "gunLightColor");
-	GLuint DistanceFog = glGetUniformLocation(Renderer::GetShaderProgramID(), "distanceFog");
+	GLuint DistanceFogColor = glGetUniformLocation(Renderer::GetShaderProgramID(), "distanceFogColor");
+	GLuint DistanceFogDetails = glGetUniformLocation(Renderer::GetShaderProgramID(), "distanceFogDetails");
 
 	// Light Coefficients
 	const vec3 lightColor = GetLightColor();//GetGunLightColor();//GetLightColor();
@@ -265,7 +267,8 @@ void World::Draw()
 	const vec4 backlightPosition = GetBackLightPosition();
 	const vec3 gunLightColor = GetGunLightColor();
 	const vec4 gunLightPosition = GetGunLightPosition();
-	const vec4 distanceFog = GetDistanceFog();
+	const vec3 distanceFogColor = GetDistanceFogColor();
+	const vec3 distanceFogDetails = GetDistanceFogDetails();
 
 	glUniform4f(WLPositionLocation, lightPosition.x, lightPosition.y, lightPosition.z, lightPosition.w);
 	glUniform4f(LColorLocation, lightColor.r, lightColor.g, lightColor.b, minAmbient);
@@ -273,7 +276,8 @@ void World::Draw()
 	glUniform4f(BLPositionLocation, backlightPosition.x, backlightPosition.y, backlightPosition.z, backlightPosition.w);
 	glUniform4f(GLPositionLocation, gunLightPosition.x, gunLightPosition.y, gunLightPosition.z, gunLightPosition.w);
 	glUniform3f(GLColorLocation, gunLightColor.r, gunLightColor.g, gunLightColor.b);
-	glUniform4f(DistanceFog, distanceFog.x, distanceFog.y, distanceFog.z, distanceFog.w);
+	glUniform3f(DistanceFogColor, distanceFogColor.x, distanceFogColor.y, distanceFogColor.z);
+	glUniform3f(DistanceFogDetails, distanceFogDetails.x, distanceFogDetails.y, distanceFogDetails.z);
 
 	// Send the view projection constants to the shader
 	mat4 VP = mCamera[mCurrentCamera]->GetViewProjectionMatrix();
@@ -576,9 +580,14 @@ vec3 World::GetGunLightColor()
 	return mpWorldLighting->GetGunLightingColor();
 }
 
-vec4 World::GetDistanceFog()
+vec3 World::GetDistanceFogColor()
 {
-	return mpWorldLighting->GetDistanceFog();
+	return mpWorldLighting->GetDistanceFogColor();
+}
+
+vec3 World::GetDistanceFogDetails()
+{
+	return mpWorldLighting->GetDistanceFogDetails();
 }
 
 ParticleDescriptor* World::FindParticleDescriptor(ci_string name)

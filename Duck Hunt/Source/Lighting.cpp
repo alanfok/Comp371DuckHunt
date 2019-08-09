@@ -16,10 +16,12 @@ Lighting::Lighting()
 	ambient = 0.3f;
 	ambientColor = glm::vec3(1.0f, 1.0f, 1.0f);
 
-	distanceFog = glm::vec4(0.5f, 0.5f, 1.0f, 25.0f);
+	//distanceFogColor = glm::vec3(0.294f, 0.78f, 0.98f); //Original duck hunt background
+	distanceFogColor = glm::vec3(0.663f, 0.749f, 0.792f); //Winter sky
+	distanceFogDetails = glm::vec3(16.0f, 64.0f, 1.0f);
 }
 
-Lighting::Lighting(glm::vec4 sun, glm::vec3 sunColor, glm::vec4 back, glm::vec3 billboardColor, glm::vec3 gunColor, float amb, glm::vec3 ambColor, glm::vec4 fog)
+Lighting::Lighting(glm::vec4 sun, glm::vec3 sunColor, glm::vec4 back, glm::vec3 billboardColor, glm::vec3 gunColor, float amb, glm::vec3 ambColor, glm::vec3 fog, glm::vec3 fogDetails)
 {
 	sunlight = sun;
 	sunlightColor = sunColor;
@@ -34,7 +36,8 @@ Lighting::Lighting(glm::vec4 sun, glm::vec3 sunColor, glm::vec4 back, glm::vec3 
 	ambient = amb;
 	ambientColor = ambColor;
 
-	distanceFog = fog;
+	distanceFogColor = fog;
+	distanceFogDetails = fogDetails;
 }
 
 
@@ -83,9 +86,14 @@ glm::vec3 Lighting::GetAmbientLightingColor()
 	return ambientColor;
 }
 
-glm::vec4 Lighting::GetDistanceFog()
+glm::vec3 Lighting::GetDistanceFogColor()
 {
-	return distanceFog;
+	return distanceFogColor;
+}
+
+glm::vec3 Lighting::GetDistanceFogDetails()
+{
+	return distanceFogDetails;
 }
 
 void Lighting::Update()
