@@ -239,6 +239,66 @@ void World::Update(float dt)
 
 void World::Draw()
 {
+	//Shadows work starts here
+	unsigned int depthMapFBO;
+	glGenFramebuffers(1, &depthMapFBO);
+
+	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
+
+	unsigned int depthMap;
+	glGenTextures(1, &depthMap);
+	glBindTexture(GL_TEXTURE_2D, depthMap);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
+		SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
+	glDrawBuffer(GL_NONE);
+	glReadBuffer(GL_NONE);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	GLint m_viewport[4];
+	glGetIntegerv(GL_VIEWPORT, m_viewport);
+
+	glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+	glClear(GL_DEPTH_BUFFER_BIT);
+
+	float near_plane = 1.0f, far_plane = 30.0f;//7.5f;
+	glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
+	glm::mat4 lightView = mpWorldLighting->GetLightLookAt();
+	glm::mat4 lightSpaceMatrix = lightProjection * lightView;
+
+	//Renderer::BeginFrame();
+
+	Renderer::SetShader(SHADER_PHONG_SHADOWS);
+	glUseProgram(Renderer::GetShaderProgramID());
+	GLuint LightSpaceMatrix = glGetUniformLocation(Renderer::GetShaderProgramID(), "lightSpaceMatrix");
+	glUniformMatrix4fv(LightSpaceMatrix, 1, GL_FALSE, &lightSpaceMatrix[0][0]);
+
+	glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+	glClear(GL_DEPTH_BUFFER_BIT);
+
+	for (vector<Model*>::iterator it = mModel.begin(); it < mModel.end(); ++it)
+	{
+		(*it)->Draw();
+	}
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	//Renderer::EndFrame();
+
+	// 2. then render scene as normal with shadow mapping (using depth map)
+	glViewport(0, 0, m_viewport[2], m_viewport[3]);
+
+	glBindTexture(GL_TEXTURE_2D, depthMap);
+	//Shadows work ends here
+
 	Renderer::BeginFrame();
 	
 	// Set shader to use
