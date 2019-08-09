@@ -85,7 +85,17 @@ void Lighting::Update()
 	vec3 camLookAt = normalize(-viewMatrix[2]);
 	vec3 cameraPosition = viewMatrix[3];
 
+	if (timer > 0)
+	{
+		timer -= 1;
+	}
+
 	if (World::GetInstance()->IsShooting())
+	{
+		timer = 3;
+	}
+
+	if (timer > 0)
 	{
 		gunLight = glm::vec4(camLookAt + cameraPosition, 1.0f);
 	}
