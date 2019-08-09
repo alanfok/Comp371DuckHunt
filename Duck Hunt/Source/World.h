@@ -50,6 +50,7 @@ public:
 
 	glm::vec3 GetLightAttenuation(); //Used for specular lighting
 	glm::vec4 GetLightPosition();
+	glm::vec4 GetBackLightPosition();
 	glm::vec3 GetLightColor();
 	glm::vec4 GetBillboardLightPosition(); //Always the camera lookAt vector so that billboards are always drawn fully lit
 	glm::vec3 GetBillboardLightColor();

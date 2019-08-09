@@ -6,6 +6,8 @@ Lighting::Lighting()
 	sunlight = glm::vec4(5.0f, -10.0f, -5.0f, 0.0f);
 	sunlightColor = glm::vec3(1.0f, 1.0f, 1.0f);
 
+	backlight = glm::vec4(0.0f, 0.0f, 5.0f, 0.0f);
+
 	billboardLightColor = glm::vec3(1.0f, 1.0f, 1.0f);
 
 	gunLight = glm::vec4(0.0f); //Doesn't matter, since it gets updated
@@ -15,10 +17,12 @@ Lighting::Lighting()
 	ambientColor = glm::vec3(1.0f, 1.0f, 1.0f);
 }
 
-Lighting::Lighting(glm::vec4 sun, glm::vec3 sunColor, glm::vec3 billboardColor, glm::vec3 gunColor, float amb, glm::vec3 ambColor)
+Lighting::Lighting(glm::vec4 sun, glm::vec3 sunColor, glm::vec4 back, glm::vec3 billboardColor, glm::vec3 gunColor, float amb, glm::vec3 ambColor)
 {
 	sunlight = sun;
 	sunlightColor = sunColor;
+
+	backlight = back;
 
 	billboardLightColor = billboardColor;
 
@@ -43,6 +47,11 @@ glm::vec4 Lighting::GetSunlightVector()
 glm::vec3 Lighting::GetSunlightColor()
 {
 	return sunlightColor;
+}
+
+glm::vec4 Lighting::GetBacklightVector()
+{
+	return backlight;
 }
 
 glm::vec3 Lighting::GetBillboardLightColor()
