@@ -11,7 +11,7 @@ class Lighting
 {
 public:
 	Lighting();
-	Lighting(glm::vec4 sun, glm::vec3 sunColor, glm::vec4 back, glm::vec3 billboardColor, glm::vec3 gunColor, float amb, glm::vec3 ambColor, glm::vec4 fog);
+	Lighting(glm::vec4 sun, glm::vec3 sunColor, glm::vec4 back, glm::vec3 billboardColor, glm::vec3 gunColor, float amb, glm::vec3 ambColor, glm::vec3 fog, glm::vec3 fogDetails);
 	~Lighting();
 
 	void Update();	//Update the position of the lighting from the gun's tip, since it moves when the camera moves
@@ -25,7 +25,8 @@ public:
 	float GetAmbientLightingFloat();
 	glm::vec3 GetAmbientLightingColor();
 
-	glm::vec4 GetDistanceFog();
+	glm::vec3 GetDistanceFogColor();
+	glm::vec3 GetDistanceFogDetails();
 private:
 	glm::vec4 sunlight;
 	glm::vec3 sunlightColor;
@@ -40,7 +41,8 @@ private:
 	float ambient;
 	glm::vec3 ambientColor;
 
-	glm::vec4 distanceFog;
+	glm::vec3 distanceFogColor;
+	glm::vec3 distanceFogDetails; //x: start distance, y: lerp finish distance, z: alpha
 
 	int timer = 0;
 };
