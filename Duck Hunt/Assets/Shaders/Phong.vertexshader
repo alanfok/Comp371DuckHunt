@@ -14,12 +14,15 @@ out vec4 lightVector;     // Vector from the vertex to the Light in View Space
 						  // Length of lightVector is the distance between light and vertex
 out vec4 backlightVector;
 out vec4 gunLightVector;
+out vec4 position_L;
 
 // Uniform
 // Values that stay constant for the whole mesh.
 uniform mat4 WorldTransform;
 uniform mat4 ViewTransform;
 uniform mat4 ProjectonTransform;
+uniform mat4 ViewTransform_Light;
+uniform mat4 ProjectonTransform_Light;
 
 // light position
 uniform vec4 WorldLightPosition; // w = 0, so directional light
@@ -31,15 +34,24 @@ uniform vec4 DistanceFogDetails;
 
 void main()
 {
+	//Shading code
+	mat4 MV_L = ViewTransform_Light * WorldTransform;
+	mat4 MVP_L = ProjectonTransform_Light * MV_L;
+	mat4 biasMatrix = mat4 (0.5f, 0.0f, 0.0f, 0.0f,
+							0.0f, 0.5f, 0.0f, 0.0f,
+							0.0f, 0.0f, 0.5f, 0.0f,
+							0.5f, 0.5f, 0.5f, 1.0f);
+	mat4 depthBiasMVP = biasMatrix * MVP_L;
+	vec4 position_L = depthBiasMVP * vec4(vertexPosition_modelspace, 1);
+
 	mat4 MV = ViewTransform * WorldTransform;
 	mat4 MVP = ProjectonTransform * MV;
 
 	// Output position of the vertex, in clip space : MVP * position
-	gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
+	gl_Position =  MVP * vec4(vertexPosition_modelspace, 1);
 	v_color = vertexColor;
 
 	// Prepare Data for Fragment Shader
-	// Should the normal be transformed?
 	normal = vec3 (transpose(inverse(MV)) * vec4(vertexNormal_modelspace, 0.0f));
 	
 	eyeVector = -vec3(MV * vec4(vertexPosition_modelspace,1));

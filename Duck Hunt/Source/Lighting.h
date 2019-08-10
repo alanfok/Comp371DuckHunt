@@ -29,6 +29,7 @@ public:
 	glm::vec3 GetDistanceFogDetails();
 
 	glm::mat4 GetLightLookAt();
+	glm::mat4 GetLightProjection();
 private:
 	glm::vec4 sunlight;
 	glm::vec3 sunlightColor;
@@ -47,6 +48,7 @@ private:
 	glm::vec3 distanceFogDetails; //x: start distance, y: lerp finish distance, z: alpha
 
 	glm::mat4 lightView;
+	glm::mat4 lightProjection;
 
 	int timer = 0;
 };

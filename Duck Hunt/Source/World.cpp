@@ -180,11 +180,11 @@ void World::Update(float dt)
 		//mat4 viewMatrix = glm::inverse(GetCurrentCamera()->GetViewMatrix());
 		vec3 camLookAt= -mInverseViewMatrix[2];
 		vec3 cameraPosition = mInverseViewMatrix[3];
-		std::cout << camLookAt.x << " " << camLookAt.y << " " << camLookAt.z << "\n";
+		//std::cout << camLookAt.x << " " << camLookAt.y << " " << camLookAt.z << "\n";
 		Bullet *bt = new Bullet(cameraPosition, projectileSpeed *  camLookAt);
 		bulletList.push_back(bt);
         //printf("I like trains");
-        cout << "clicked" << endl;
+        //cout << "clicked" << endl;
         lastMouseState = true;
 		clicked = true;
     }
@@ -239,67 +239,43 @@ void World::Update(float dt)
 
 void World::Draw()
 {
+	Renderer::BeginFrame();
+
 	//Shadows work starts here
+	/*(Renderer::SetShader(SHADER_PHONG);
+	glUseProgram(Renderer::GetShaderProgramID());
+
 	unsigned int depthMapFBO;
 	glGenFramebuffers(1, &depthMapFBO);
 
+	// Depth texture. Slower than a depth buffer, but you can sample it later in your shader
 	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
-
-	unsigned int depthMap;
-	glGenTextures(1, &depthMap);
-	glBindTexture(GL_TEXTURE_2D, depthMap);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
-		SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	GLuint depthTexture;
+	glGenTextures(1, &depthTexture);
+	glBindTexture(GL_TEXTURE_2D, depthTexture);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT16, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthTexture, 0);
 	glDrawBuffer(GL_NONE);
 	glReadBuffer(GL_NONE);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	GLint m_viewport[4];
-	glGetIntegerv(GL_VIEWPORT, m_viewport);
+	Renderer::CheckForErrors();
 
-	glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
-	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-	glClear(GL_DEPTH_BUFFER_BIT);
+	GLuint VMatrixLocation_Light = glGetUniformLocation(Renderer::GetShaderProgramID(), "ViewTransform_Light");
+	GLuint PMatrixLocation_Light = glGetUniformLocation(Renderer::GetShaderProgramID(), "ProjectonTransform_Light");
+	glUniformMatrix4fv(VMatrixLocation_Light, 1, GL_FALSE, &mpWorldLighting->GetLightLookAt()[0][0]);
+	glUniformMatrix4fv(PMatrixLocation_Light, 1, GL_FALSE, &mpWorldLighting->GetLightProjection()[0][0]);
 
-	float near_plane = 1.0f, far_plane = 30.0f;//7.5f;
-	glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
-	glm::mat4 lightView = mpWorldLighting->GetLightLookAt();
-	glm::mat4 lightSpaceMatrix = lightProjection * lightView;
+	Renderer::CheckForErrors();*/
 
-	//Renderer::BeginFrame();
-
-	Renderer::SetShader(SHADER_PHONG_SHADOWS);
-	glUseProgram(Renderer::GetShaderProgramID());
-	GLuint LightSpaceMatrix = glGetUniformLocation(Renderer::GetShaderProgramID(), "lightSpaceMatrix");
-	glUniformMatrix4fv(LightSpaceMatrix, 1, GL_FALSE, &lightSpaceMatrix[0][0]);
-
-	glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
-	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-	glClear(GL_DEPTH_BUFFER_BIT);
-
-	for (vector<Model*>::iterator it = mModel.begin(); it < mModel.end(); ++it)
-	{
-		(*it)->Draw();
-	}
-
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-	//Renderer::EndFrame();
-
-	// 2. then render scene as normal with shadow mapping (using depth map)
-	glViewport(0, 0, m_viewport[2], m_viewport[3]);
-
-	glBindTexture(GL_TEXTURE_2D, depthMap);
 	//Shadows work ends here
-
-	Renderer::BeginFrame();
+	//Renderer::BeginFrame();
 	
 	// Set shader to use
 	Renderer::SetShader(SHADER_PHONG);
