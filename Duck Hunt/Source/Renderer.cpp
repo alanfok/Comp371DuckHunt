@@ -102,6 +102,11 @@ void Renderer::Initialize()
 							shaderPathPrefix + "Gouraud.fragmentshader")
 	);
 
+	sShaderProgramID.push_back(
+				LoadShaders(shaderPathPrefix + "PhongShadows.vertexshader",
+							shaderPathPrefix + "PhongShadows.fragmentshader")
+								);
+
 	sCurrentShader = 0;
 
 }

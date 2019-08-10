@@ -123,3 +123,15 @@ void Lighting::Update()
 		gunLight = glm::vec4(cameraPosition + camLookAtExtreme, 1.0f);
 	}
 }
+
+glm::mat4 Lighting::GetLightLookAt()
+{
+	/*return glm::lookAt(glm::vec3(-2.0f, 4.0f, -1.0f),
+							glm::vec3(0.0f, 0.0f, 0.0f),
+							glm::vec3(0.0f, 1.0f, 0.0f));*/
+
+	return glm::lookAt(-vec3(sunlight),		// Camera position
+						vec3(sunlight),	// Look towards this point
+						vec3(5.0f, 5.0f, -10.0f)		// Up vector
+	);
+}
