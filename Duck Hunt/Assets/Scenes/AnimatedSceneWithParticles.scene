@@ -429,8 +429,9 @@ scaling  = 1.2f 1.2f 1.2f
 
 [Object Gun]
 name     = gun
-position = 5.0 3.0 15.0
-scaling  = 0.25 0.25 0.25
+position = 0.9 -0.5 -2.4
+scaling  = 0.15 0.15 0.15
+rotation = 1.0f -0.5f 0.0f 5.0f
 
 
 [AnimatedObject LowResDuck]
