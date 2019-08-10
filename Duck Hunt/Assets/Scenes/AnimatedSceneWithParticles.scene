@@ -166,7 +166,7 @@ rotateKey           angle = 31.472039              time = 14
 rotateKey           angle = -34.174256             time = 18
 rotateKey           angle = -40.020325             time = 20
 
-[AnimatedObject Duck]
+[AnimatedObject LowResDuck]
 name     = duck
 position = 0.0 0.0 0.0
 bone = Main       position = 0.0 0.0 0.0
