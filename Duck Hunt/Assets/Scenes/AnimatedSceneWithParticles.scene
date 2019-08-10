@@ -149,12 +149,6 @@ position = 0.0 7.0 -10.0
 name     = "KeyCycle81"
 position = 7.07 6.0 -7.07
 
-[Cube]
-name     = "Ground"
-scaling  = 100.0 100.0 100.0
-position = 0.0 -50 0.0
-rotation = 1.0 0.0 0.0 90.0
-
 
 [ParticleDescriptor]
 name        = Fountain
@@ -439,7 +433,8 @@ rotateKey           angle = -40.020325             time = 20
 
 [AnimatedObject LowResDuck]
 name     = duck
-position = 0.0 0.0 0.0
+position = 0.0 10.0 0.0
+rotation = 0.0f 1.0f 0.0f 90.0f
 bone = Main       position = 0.0 0.0 0.0
 bone = Wing_R_1   position = 0.37849557 0.0 0.0
 bone = Wing_R_2   position = 0.63251851 0.0 0.0
@@ -448,5 +443,29 @@ bone = Wing_L_2   position = -0.63251851 0.0 0.0
 boneParent 1 += 2
 boneParent 3 += 4
 boneAnimation = "DuckFlight"
+
+[Object Ground]
+name     = ground
+position = 0.0 0.0 0.0
+
+[Object Tree]
+name     = tree1
+position = -12.0 2.0 -3.0
+
+[Object Tree]
+name     = tree2
+position = 25.0 4.0 -20.0
+rotation = 0.0f 1.0f 0.0f 120.0f
+
+[Object Tree]
+name     = tree3
+position = -5.0 6.0 -40.0
+rotation = 0.0f 1.0f 0.0f 220.0f
+scaling  = 1.2f 1.2f 1.2f
+
+[Object Gun]
+name     = gun
+position = 5.0 3.0 15.0
+scaling  = 0.25 0.25 0.25
 
 
