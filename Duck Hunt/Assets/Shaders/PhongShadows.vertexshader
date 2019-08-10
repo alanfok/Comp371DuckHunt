@@ -1,15 +1,17 @@
 #version 330 core
-layout (location = 0) in vec3 vertexPosition_modelspace;
 
-uniform mat4 lightSpaceMatrix; //instead of ViewTransform I think?
-uniform mat4 model; //wtf is this though. maybe the WorldTransform?
+// Input vertex data, different for all executions of this shader.
+layout(location = 0) in vec3 vertexPosition_modelspace;
 
+// Values that stay constant for the whole mesh.
 uniform mat4 WorldTransform;
-//uniform mat4 ViewTransform;
-//uniform mat4 ProjectonTransform;
+uniform mat4 ViewTransform_Light;
+uniform mat4 ProjectonTransform_Light;
 
 void main()
 {
-    //gl_Position = lightSpaceMatrix * model * vec4(vertexPosition_modelspace, 1.0);
-	gl_Position = lightSpaceMatrix * WorldTransform * vec4(vertexPosition_modelspace, 1.0);
-}  
+	mat4 MV = ViewTransform_Light * WorldTransform;
+	mat4 MVP = ProjectonTransform_Light * MV;
+
+	gl_Position =  MVP * vec4(vertexPosition_modelspace, 1);
+}

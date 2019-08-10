@@ -21,6 +21,7 @@ in vec4 lightVector;     // Vector from the vertex to the Light in View Space
 						 // if w = 1: Point light, if w = 0: directional light
 in vec4 backlightVector;
 in vec4 gunLightVector;
+in vec4 position_L;
 
 // Ouput data
 out vec3 color;
@@ -63,8 +64,15 @@ void main()
 		specular = materialCoefficients.z * attenuation * lightColorV3 * pow(max(0.0f, dot(nEyeVector, reflectDirection)), materialCoefficients.w);
 	}
 
+	//Shadows
+	float visibility = 1.0f;
+	/*if (texture(shadowMap, ShadowCoord.xy).z < ShadowCoord.z)
+	{
+		visibility = 0.0f;
+	}*/
+
 	// Calculate the final color. Specular is kept outside as it is a direct reflection of the light, rather than a direct manifestation of the material's color. Better result.
-	vec3 sunlightColor = v_color * (diffuse + ambient) + specular;
+	vec3 sunlightColor = v_color * (visibility * diffuse + ambient) + visibility * specular;
 
 
 	//Backlight
