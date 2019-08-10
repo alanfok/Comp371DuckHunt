@@ -9,6 +9,10 @@
 
 #include "ObjModel.h"
 #include "Renderer.h"
+#include "World.h"
+#include "Camera.h"
+
+
 
 using namespace glm;
 
@@ -74,14 +78,22 @@ void ObjModel::Update(float dt)
 
 void ObjModel::Draw()
 {
+
 	// Draw the Vertex Buffer
 	// Note this draws a Sphere
 	// The Model View Projection transforms are computed in the Vertex Shader
 	glBindVertexArray(mVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, mVBO);
 
+	mat4 worldMatrix = GetWorldMatrix();
+	if (mName == "gun") {
+		const Camera* cam = World::GetInstance()->GetCurrentCamera();
+		mat4 viewMatrix = cam->GetViewMatrix();
+		worldMatrix = inverse(viewMatrix) * worldMatrix;
+	}
+	
 	GLuint WorldMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "WorldTransform");
-	glUniformMatrix4fv(WorldMatrixLocation, 1, GL_FALSE, &GetWorldMatrix()[0][0]);
+	glUniformMatrix4fv(WorldMatrixLocation, 1, GL_FALSE, &worldMatrix[0][0]);
 
 	GLuint MaterialLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "materialCoefficients");
 	glUniform4f(MaterialLocation, materialCoefficients.x, materialCoefficients.y, materialCoefficients.z, materialCoefficients.w);
