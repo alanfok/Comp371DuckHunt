@@ -12,6 +12,7 @@
 #include "ParsingHelper.h"
 #include "Model.h"
 #include <vector>
+#include "BSpline.h"
 
 #include <glm/glm.hpp>
 
@@ -59,6 +60,7 @@ private:
     std::vector<AnimationKey> mKey;
     std::vector<float> mKeyTime;
 
+	BSpline spline;
     // For drawing lines between keys
     // The vertex format is only position
     struct Vertex

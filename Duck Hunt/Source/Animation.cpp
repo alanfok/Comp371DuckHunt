@@ -57,6 +57,14 @@ Animation::~Animation()
 
 void Animation::CreateVertexBuffer()
 {
+
+	for(int i=0;i<mKey.size()-1;++i)
+	{
+		spline.AddControlPoint(mKey[i].GetPosition());
+	}
+
+	spline.CreateVertexBuffer();
+	/*
     // This is just to display lines between the animation keys
     for (int i=0; i<(int)mKey.size(); ++i)
     {
@@ -92,6 +100,7 @@ void Animation::CreateVertexBuffer()
                           (void*)0        // array buffer offset
                           );
     glEnableVertexAttribArray(0);
+	*/
 
 }
 
@@ -121,6 +130,8 @@ void Animation::Draw()
     // The shader is bound in World.cpp and the ViewProjection Matrix uniform is set there...
 	// The Model View Projection transforms are computed in the Vertex Shader
 
+	spline.Draw();
+	/*
 	glBindVertexArray(mVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, mVBO);
 
@@ -130,7 +141,7 @@ void Animation::Draw()
 	glUniformMatrix4fv(WorldMatrixLocation, 1, GL_FALSE, &worldMatrix[0][0]);
 
 	glDrawArrays(GL_LINE_LOOP, 0, mVertexBuffer.size());
-
+	*/
 }
 
 
