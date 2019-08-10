@@ -1,34 +1,24 @@
-﻿  Animation.cpp
-  Billboard.cpp
-  Camera.cpp
-  CubeModel.cpp
-  EventManager.cpp
-  FirstPersonCamera.cpp
-  main.cpp
-  Model.cpp
-  ParticleDescriptor.cpp
-  ParticleEmitter.cpp
-  ParticleSystem.cpp
-  Renderer.cpp
-  shader.cpp
-  sphere.cpp
-  SphereModel.cpp
-  StaticCamera.cpp
-  TextureLoader.cpp
-  World.cpp
-  Generating Code...
-LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
-LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
-shader.obj : warning LNK4049: locally defined symbol ___glewAttachShader imported
-shader.obj : warning LNK4049: locally defined symbol ___glewCompileShader imported
-shader.obj : warning LNK4049: locally defined symbol ___glewCreateProgram imported
-shader.obj : warning LNK4049: locally defined symbol ___glewCreateShader imported
-shader.obj : warning LNK4049: locally defined symbol ___glewDeleteShader imported
-shader.obj : warning LNK4049: locally defined symbol ___glewGetProgramInfoLog imported
-shader.obj : warning LNK4049: locally defined symbol ___glewGetProgramiv imported
-shader.obj : warning LNK4049: locally defined symbol ___glewGetShaderInfoLog imported
-shader.obj : warning LNK4049: locally defined symbol ___glewGetShaderiv imported
-shader.obj : warning LNK4049: locally defined symbol ___glewLinkProgram imported
-shader.obj : warning LNK4049: locally defined symbol ___glewShaderSource imported
-glew32s.lib(glew.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'glew32s.lib(glew.obj)' or at 'C:\Users\g_lermon\Desktop\gClermont_40057664_a3\A3\Part 2\Bin\vc120.pdb'; linking object as if no debug info
-  Assignment1.vcxproj -> C:\Users\g_lermon\Desktop\gClermont_40057664_a3\A3\Part 2\VS2017\/../Bin/Assignment1-Debug.exe
+﻿  AnimatedObjModel.cpp
+c:\users\ghislain\desktop\concordia homework\comp 371\final project\comp371duckhunt\duck hunt\thirdparty\freeimage-3170\source\freeimage.h : warning C4819: The file contains a character that cannot be represented in the current code page (932). Save the file in Unicode format to prevent data loss
+c:\users\ghislain\desktop\concordia homework\comp 371\final project\comp371duckhunt\duck hunt\source\animatedobjmodel.cpp(153): warning C4018: '<': signed/unsigned mismatch
+c:\users\ghislain\desktop\concordia homework\comp 371\final project\comp371duckhunt\duck hunt\source\animatedobjmodel.cpp(174): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.16299.0\ucrt\stdio.h(207): note: see declaration of 'fopen'
+c:\users\ghislain\desktop\concordia homework\comp 371\final project\comp371duckhunt\duck hunt\source\animatedobjmodel.cpp(185): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.16299.0\ucrt\stdio.h(1195): note: see declaration of 'fscanf'
+c:\users\ghislain\desktop\concordia homework\comp 371\final project\comp371duckhunt\duck hunt\source\animatedobjmodel.cpp(193): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.16299.0\ucrt\stdio.h(1195): note: see declaration of 'fscanf'
+c:\users\ghislain\desktop\concordia homework\comp 371\final project\comp371duckhunt\duck hunt\source\animatedobjmodel.cpp(198): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.16299.0\ucrt\stdio.h(1195): note: see declaration of 'fscanf'
+c:\users\ghislain\desktop\concordia homework\comp 371\final project\comp371duckhunt\duck hunt\source\animatedobjmodel.cpp(204): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.16299.0\ucrt\stdio.h(1195): note: see declaration of 'fscanf'
+c:\users\ghislain\desktop\concordia homework\comp 371\final project\comp371duckhunt\duck hunt\source\animatedobjmodel.cpp(214): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.16299.0\ucrt\stdio.h(2261): note: see declaration of 'sscanf'
+c:\users\ghislain\desktop\concordia homework\comp 371\final project\comp371duckhunt\duck hunt\source\animatedobjmodel.cpp(217): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.16299.0\ucrt\stdio.h(2261): note: see declaration of 'sscanf'
+c:\users\ghislain\desktop\concordia homework\comp 371\final project\comp371duckhunt\duck hunt\source\animatedobjmodel.cpp(220): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.16299.0\ucrt\stdio.h(2261): note: see declaration of 'sscanf'
+c:\users\ghislain\desktop\concordia homework\comp 371\final project\comp371duckhunt\duck hunt\source\animatedobjmodel.cpp(223): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.16299.0\ucrt\stdio.h(2261): note: see declaration of 'sscanf'
+c:\users\ghislain\desktop\concordia homework\comp 371\final project\comp371duckhunt\duck hunt\source\animatedobjmodel.cpp(313): warning C4018: '<': signed/unsigned mismatch
+c:\users\ghislain\desktop\concordia homework\comp 371\final project\comp371duckhunt\duck hunt\source\animatedobjmodel.cpp(316): warning C4018: '<': signed/unsigned mismatch
+  Assignment1.vcxproj -> C:\Users\Ghislain\Desktop\Concordia homework\COMP 371\Final Project\Comp371DuckHunt\Duck Hunt\VS2017\/../Bin/Assignment1-Debug.exe

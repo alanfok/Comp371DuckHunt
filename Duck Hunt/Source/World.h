@@ -18,6 +18,7 @@ class Camera;
 class Model;
 class Animation;
 class AnimationKey;
+class BoneAnimation;
 class ParticleSystem;
 class ParticleDescriptor;
 
@@ -36,6 +37,7 @@ public:
     Animation* FindAnimation(ci_string animName);
     AnimationKey* FindAnimationKey(ci_string keyName);
     ParticleDescriptor* FindParticleDescriptor(ci_string name);
+	BoneAnimation* FindBoneAnimation(ci_string animName);
 
     const Camera* GetCurrentCamera() const;
     void AddBillboard(Billboard* b);
@@ -55,6 +57,7 @@ private:
 	std::vector<Model*> mModel;
     std::vector<Animation*> mAnimation;
     std::vector<AnimationKey*> mAnimationKey;
+	std::vector<BoneAnimation*> mBoneAnimation;
 	std::vector<Camera*> mCamera;
     std::vector<ParticleSystem*> mParticleSystemList;
     std::vector<ParticleDescriptor*> mParticleDescriptorList;

@@ -125,7 +125,58 @@ position = 10.0 2.0 0.0
 animation = "CycleAnim"
 particleEmitter = "Smoke"
 
-[Object Duck]
-name     = "Duck"
+[BoneAnimation]
+name = "DuckFlight"
+fps = 30
+boneCount = 5
+bone = 0
+translateKey        position = 0.15524147          time = 2
+translateKey        position = 0.3456235           time = 10
+translateKey        position = 0.15524147          time = 18
+bone = 1
+rotateKey           angle = 62.713595              time = 1
+rotateKey           angle = 51.747837              time = 3
+rotateKey           angle = -47.7868               time = 7
+rotateKey           angle = -60.417801             time = 9
+rotateKey           angle = -47.7868               time = 11
+rotateKey           angle = 51.747837              time = 15
+rotateKey           angle = 62.713595              time = 17
+bone = 2
+rotateKey           angle = 40.020325              time = 4
+rotateKey           angle = 34.174256              time = 6
+rotateKey           angle = -31.472039             time = 10
+rotateKey           angle = -37.406395             time = 12
+rotateKey           angle = -31.472039             time = 14
+rotateKey           angle = 34.174256              time = 18
+rotateKey           angle = 40.020325              time = 20
+bone = 3
+rotateKey           angle = -62.713595             time = 1
+rotateKey           angle = -51.747837             time = 3
+rotateKey           angle = 47.7868                time = 7
+rotateKey           angle = 60.417801              time = 9
+rotateKey           angle = 47.7868                time = 11
+rotateKey           angle = -51.747837             time = 15
+rotateKey           angle = -62.713595             time = 17
+bone = 4
+rotateKey           angle = -40.020325             time = 4
+rotateKey           angle = -34.174256             time = 6
+rotateKey           angle = 31.472039              time = 10
+rotateKey           angle = 37.406395              time = 12
+rotateKey           angle = 31.472039              time = 14
+rotateKey           angle = -34.174256             time = 18
+rotateKey           angle = -40.020325             time = 20
+
+[AnimatedObject Duck]
+name     = duck
 position = 0.0 0.0 0.0
+bone = Main       position = 0.0 0.0 0.0
+bone = Wing_R_1   position = 0.37849557 0.0 0.0
+bone = Wing_R_2   position = 0.63251851 0.0 0.0
+bone = Wing_L_1   position = -0.37849557 0.0 0.0
+bone = Wing_L_2   position = -0.63251851 0.0 0.0
+boneParent 1 += 2
+boneParent 3 += 4
+boneAnimation = "DuckFlight"
+
+
 

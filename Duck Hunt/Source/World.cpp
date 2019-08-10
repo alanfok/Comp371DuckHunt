@@ -17,11 +17,13 @@
 #include "CubeModel.h"
 #include "SphereModel.h"
 #include "Animation.h"
+#include "BoneAnimation.h"
 #include "Billboard.h"
 #include <GLFW/glfw3.h>
 #include "EventManager.h"
 #include "TextureLoader.h"
 #include "ObjModel.h"
+#include "AnimatedObjModel.h"
 
 #include "ParticleDescriptor.h"
 #include "ParticleEmitter.h"
@@ -169,6 +171,11 @@ void World::Update(float dt)
     {
         (*it)->Update(dt);
     }
+
+	for (vector<BoneAnimation*>::iterator it = mBoneAnimation.begin(); it < mBoneAnimation.end(); ++it)
+	{
+		(*it)->Update(dt);
+	}
 
 
 	// Update current Camera
@@ -339,6 +346,19 @@ void World::LoadScene(const char * scene_path)
 				obj->Load(iss);
 				mModel.push_back(obj);
 			}
+			else if (result.size() > 14 && result.substr(0, 14) == "AnimatedObject")
+			{
+				std::string name = std::string(result.substr(15).c_str());
+				AnimatedObjModel* obj = new AnimatedObjModel("../Assets/Models/" + name + ".obj");
+				obj->Load(iss);
+				mModel.push_back(obj);
+			}
+			else if (result == "BoneAnimation")
+			{
+				BoneAnimation* anim = new BoneAnimation();
+				anim->Load(iss);
+				mBoneAnimation.push_back(anim);
+			}
 			else if ( result.empty() == false && result[0] == '#')
 			{
 				// this is a comment line
@@ -438,4 +458,16 @@ ParticleDescriptor* World::FindParticleDescriptor(ci_string name)
         }
     }
     return nullptr;
+}
+
+BoneAnimation* World::FindBoneAnimation(ci_string animName)
+{
+	for (std::vector<BoneAnimation*>::iterator it = mBoneAnimation.begin(); it < mBoneAnimation.end(); ++it)
+	{
+		if ((*it)->GetName() == animName)
+		{
+			return *it;
+		}
+	}
+	return nullptr;
 }
