@@ -114,59 +114,60 @@ void ParticleSystem::Update(float dt)
 
     }
     
-    
-    for (std::list<Particle*>::iterator it = mParticleList.begin(); it != mParticleList.end(); it++)
-    {
-        Particle* p = *it;
-		p->currentTime += dt;
-        p->billboard.position += p->velocity * dt;
-        
-        // @TODO 6 - Update each particle parameters
-        //
-        // Update the velocity of the particle from the acceleration in the descriptor
-        // Update the size of the particle according to its growth
-        // Update The color is also updated in 3 phases
-        //
-        //
-        // Phase 1 - Initial: from t = [0, fadeInTime] - Linearly interpolate between initial color and mid color
-        // Phase 2 - Mid:     from t = [fadeInTime, lifeTime - fadeOutTime] - color is mid color
-        // Phase 3 - End:     from t = [lifeTime - fadeOutTime, lifeTime]
-
-		// Velocity update
-		p->velocity += dt*mpDescriptor->acceleration;
-
-		// Size update
-		p->billboard.size += dt*mpDescriptor->sizeGrowthVelocity;
-
-		// Calculate color
-		if (p->currentTime < mpDescriptor->fadeInTime) // Initial phase
+	if (mParticleList.size() > 0) {
+		for (std::list<Particle*>::iterator it = mParticleList.begin(); it != mParticleList.end(); it++)
 		{
-			p->billboard.color = mix(mpDescriptor->initialColor, mpDescriptor->midColor, p->currentTime / mpDescriptor->fadeInTime);
-		}
-		else if (p->currentTime < p->lifeTime - mpDescriptor->fadeOutTime) // Mid phase
-		{
-			p->billboard.color = mpDescriptor->midColor;
-		}
-		else // End phase
-		{
-			p->billboard.color = mix(mpDescriptor->midColor, mpDescriptor->endColor, 1 - (p->lifeTime - p->currentTime) / mpDescriptor->fadeOutTime);
-		}
+			Particle* p = *it;
+			p->currentTime += dt;
+			p->billboard.position += p->velocity * dt;
 
-        // ...
-        //p->billboard.color = vec4(1.0f, 1.0f, 1.0f, 1.0f); // wrong... check required implementation above
-        // ...
-        
-        // Do not touch code below...
-        
-        // Particles are destroyed if expired
-        // Move from the particle to inactive list
-        // Remove the billboard from the world
-        if (p->currentTime > p->lifeTime)
-        {
-            mInactiveParticles.push_back(*it);
-            
+			// @TODO 6 - Update each particle parameters
+			//
+			// Update the velocity of the particle from the acceleration in the descriptor
+			// Update the size of the particle according to its growth
+			// Update The color is also updated in 3 phases
+			//
+			//
+			// Phase 1 - Initial: from t = [0, fadeInTime] - Linearly interpolate between initial color and mid color
+			// Phase 2 - Mid:     from t = [fadeInTime, lifeTime - fadeOutTime] - color is mid color
+			// Phase 3 - End:     from t = [lifeTime - fadeOutTime, lifeTime]
+
+			// Velocity update
+			p->velocity += dt * mpDescriptor->acceleration;
+
+			// Size update
+			p->billboard.size += dt * mpDescriptor->sizeGrowthVelocity;
+
+			// Calculate color
+			if (p->currentTime < mpDescriptor->fadeInTime) // Initial phase
+			{
+				p->billboard.color = mix(mpDescriptor->initialColor, mpDescriptor->midColor, p->currentTime / mpDescriptor->fadeInTime);
+			}
+			else if (p->currentTime < p->lifeTime - mpDescriptor->fadeOutTime) // Mid phase
+			{
+				p->billboard.color = mpDescriptor->midColor;
+			}
+			else // End phase
+			{
+				p->billboard.color = mix(mpDescriptor->midColor, mpDescriptor->endColor, 1 - (p->lifeTime - p->currentTime) / mpDescriptor->fadeOutTime);
+			}
+
+			// ...
+			//p->billboard.color = vec4(1.0f, 1.0f, 1.0f, 1.0f); // wrong... check required implementation above
+			// ...
+
+			// Do not touch code below...
+
+			// Particles are destroyed if expired
+			// Move from the particle to inactive list
+			// Remove the billboard from the world
+			if (p->currentTime > p->lifeTime)
+			{
+				mInactiveParticles.push_back(*it);
+
 				World::GetInstance()->RemoveBillboard(&(p->billboard), mpDescriptor->name);
-            mParticleList.remove(*it++);
-        }
-    }
+				mParticleList.remove(*it++);
+			}
+		}
+	}
 }
