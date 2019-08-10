@@ -114,7 +114,7 @@ void ParticleSystem::Update(float dt)
 
     }
     
-	if (mParticleList.size() > 0) {
+	if (mParticleList.size() > 1) {
 		for (std::list<Particle*>::iterator it = mParticleList.begin(); it != mParticleList.end(); it++)
 		{
 			Particle* p = *it;
