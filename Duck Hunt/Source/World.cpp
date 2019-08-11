@@ -165,6 +165,34 @@ void World::Update(float dt)
 		}
 	}
 
+	//Turn on or off collision sphere drawing
+	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_C) == GLFW_PRESS)
+	{
+		if (!collisionKeyHeld)
+		{
+			showCollisionShere = !showCollisionShere;
+		}
+		collisionKeyHeld = true;
+	}
+	else if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_C) == GLFW_RELEASE)
+	{
+		collisionKeyHeld = false;
+	}
+
+	//Turn on or off viewing the skybox
+	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_B) == GLFW_PRESS)
+	{
+		if (!skyboxKeyHeld)
+		{
+			showSkybox = !showSkybox;
+		}
+		skyboxKeyHeld = true;
+	}
+	else if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_B) == GLFW_RELEASE)
+	{
+		skyboxKeyHeld = false;
+	}
+
 	// Spacebar to change the shader
 	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_0 ) == GLFW_PRESS)
 	{
@@ -195,12 +223,14 @@ void World::Update(float dt)
 	clicked = false;
 	if (lastMouseState == false && glfwGetMouseButton(EventManager::GetWindow(), GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
     {
-		const float projectileSpeed = 50.0f;
+		const float projectileSpeed = 75.0f;
 		//mat4 viewMatrix = glm::inverse(GetCurrentCamera()->GetViewMatrix());
 		vec3 camLookAt= -mInverseViewMatrix[2];
 		vec3 cameraPosition = mInverseViewMatrix[3];
 		//std::cout << camLookAt.x << " " << camLookAt.y << " " << camLookAt.z << "\n";
-		Bullet *bt = new Bullet(cameraPosition, projectileSpeed *  camLookAt);
+		//vec3 cameraPosition1 = cameraPosition * vec3(1.0f, 0.78f, 1.0f);
+		vec3 cameraPosition1 = cameraPosition * vec3(1.0f, 0.9f, 1.0f) + camLookAt * 5.0f;
+		Bullet *bt = new Bullet(cameraPosition1, projectileSpeed * camLookAt);
 		bulletList.push_back(bt);
         //printf("I like trains");
         //cout << "clicked" << endl;
@@ -259,6 +289,39 @@ void World::Update(float dt)
 	mpSnowBillboardList->Update(dt);
 
 	mpWorldLighting->Update();
+
+	//Collision
+
+	Bullet* clearBullet = NULL;
+	for (vector<Animation*>::iterator it_d = mAnimation.begin(); it_d < mAnimation.end(); ++it_d)
+	{
+		for (list<Bullet*>::iterator it_b = bulletList.begin(); it_b != bulletList.end(); ++it_b)
+		{
+			float pyth = sqrt(pow((*it_b)->GetPosition().x - (*it_d)->GetPosition().x, 2)
+				+ pow((*it_b)->GetPosition().y - (*it_d)->GetPosition().y, 2)
+				+ pow((*it_b)->GetPosition().z - (*it_d)->GetPosition().z, 2));
+			float bulletRadius = sqrt(pow((*it_b)->GetSize().x, 2) + pow((*it_b)->GetSize().y, 2) + pow((*it_b)->GetSize().z, 2));
+			float duckRadius = sqrt(pow(1.0, 2) + pow(1.0, 2) + pow(1.0, 2));
+
+			//cout << "Bullet: " << (*it_b)->GetPosition().x << ", " << (*it_b)->GetPosition().y << ", " << (*it_b)->GetPosition().z << endl;
+			//cout << "Duck: " << (*it_d)->GetPosition().x << ", " << (*it_d)->GetPosition().y << ", " << (*it_d)->GetPosition().z << endl;
+			//cout << pyth << endl;
+
+			if (pyth < bulletRadius + duckRadius)
+			{
+				if (showCollisionShere)
+				{
+					printf("I like turtles\n");
+				}
+				clearBullet = (*it_b);
+			}
+		}
+	}
+	if (clearBullet != nullptr)
+	{
+		//printf("I also like turtles\n");
+		bulletList.remove(clearBullet);
+	}
 }
 
 void World::Draw()
@@ -353,7 +416,18 @@ void World::Draw()
 	// Draw models
 	for (vector<Model*>::iterator it = mModel.begin(); it < mModel.end(); ++it)
 	{
-		(*it)->Draw();
+		if (!showCollisionShere && (*it)->GetName() == "\"Sphere\"")
+		{
+			//printf("Life is like a box of chocolates\n");
+		}
+		else if (showSkybox && (*it)->GetName() == "ground")
+		{
+
+		}
+		else
+		{
+			(*it)->Draw();
+		}
 	}
 
 	//Drwa bullets
