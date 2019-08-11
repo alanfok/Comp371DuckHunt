@@ -58,6 +58,7 @@ World::World()
 	int featherBillboardTextureID = TextureLoader::LoadTexture("../Assets/Textures/Feather.png");
 	int flakeBillboardTextureID = TextureLoader::LoadTexture("../Assets/Textures/flake.png");
 	int snowBillboardTextureID = TextureLoader::LoadTexture("../Assets/Textures/snow.png");
+
 #endif
     assert(billboardTextureID != 0);
 
@@ -195,12 +196,13 @@ void World::Update(float dt)
 	clicked = false;
 	if (lastMouseState == false && glfwGetMouseButton(EventManager::GetWindow(), GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
     {
-		const float projectileSpeed = 50.0f;
+		const float projectileSpeed = 60.0f;
 		//mat4 viewMatrix = glm::inverse(GetCurrentCamera()->GetViewMatrix());
 		vec3 camLookAt= -mInverseViewMatrix[2];
 		vec3 cameraPosition = mInverseViewMatrix[3];
+		vec3 cameraPosition1 = cameraPosition * vec3(1.3f, 1.0f, 1.0f);
 		//std::cout << camLookAt.x << " " << camLookAt.y << " " << camLookAt.z << "\n";
-		Bullet *bt = new Bullet(cameraPosition, projectileSpeed *  camLookAt);
+		Bullet *bt = new Bullet(cameraPosition1, projectileSpeed *  camLookAt);
 		bulletList.push_back(bt);
         //printf("I like trains");
         //cout << "clicked" << endl;
