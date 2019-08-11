@@ -45,6 +45,7 @@ World::World()
 	mCamera.push_back(new StaticCamera(vec3(3.0f, 30.0f, 5.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f)));
 	mCamera.push_back(new StaticCamera(vec3(0.5f,  0.5f, 5.0f), vec3(0.0f, 0.5f, 0.0f), vec3(0.0f, 1.0f, 0.0f)));
 	mCurrentCamera = 0;
+	mSkybox = new SkyBox();
 
     
 #if defined(PLATFORM_OSX)
@@ -399,6 +400,10 @@ void World::Draw()
 	mpSnowBillboardList->Draw();
     glDisable(GL_BLEND);
 
+	Renderer::SetShader(SKYBOX_SHADER);
+	glUseProgram(Renderer::GetShaderProgramID());
+	//Draw Skybox
+	mSkybox->Draw(VMatrix, PMatrix);
 
 	// Restore previous shader
 	Renderer::SetShader((ShaderType) prevShader);
