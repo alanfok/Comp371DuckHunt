@@ -69,17 +69,15 @@ key      = "KeyCycle1"  time = 8.0f
 [AnimationKey]
 name     = "KeyCycle11"
 position = 10.0 6.0 0.0
-rotation =  0.0f .0f 0.0f 180.0f
 
 [AnimationKey]
 name     = "KeyCycle21"
-position = 9.07 8.0 9.07
-rotation =  0.0f 1.0f 0.0f 90.0f
+position = 7.07 8.0 7.07
+
 
 [AnimationKey]
 name     = "KeyCycle31"
 position = 0.0 10.0 10.0
-rotation =  0.0f 1.0f 0.0f 90.0f
 
 [AnimationKey]
 name     = "KeyCycle41"
@@ -104,7 +102,7 @@ position = 7.07 6.0 -7.07
 
 
 [Animation]
-name     = "CycleAnim11"
+name     = "CycleAnim1"
 key      = "KeyCycle11"  time = 0.0f
 key      = "KeyCycle21"  time = 1.0f
 key      = "KeyCycle31"  time = 2.0f
@@ -116,6 +114,40 @@ key      = "KeyCycle81"  time = 7.0f
 key      = "KeyCycle11"  time = 8.0f
 
 
+
+[AnimationKey]
+name     = "KeyCycle11"
+position = 10.0 6.0 0.0
+
+[AnimationKey]
+name     = "KeyCycle21"
+position = 7.07 8.0 7.07
+
+
+[AnimationKey]
+name     = "KeyCycle31"
+position = 0.0 10.0 10.0
+
+[AnimationKey]
+name     = "KeyCycle41"
+position = -7.07 6.0 7.07
+
+
+[AnimationKey]
+name     = "KeyCycle51"
+position = -10.0 5.0 0.0
+
+[AnimationKey]
+name     = "KeyCycle61"
+position = -7.07 3.0 -7.07
+
+[AnimationKey]
+name     = "KeyCycle71"
+position = 0.0 7.0 -10.0
+
+[AnimationKey]
+name     = "KeyCycle81"
+position = 7.07 6.0 -7.07
 
 
 [ParticleDescriptor]
@@ -245,7 +277,7 @@ animation = "BackAndForth"
 particleEmitter = Gunsmoke
 
 
-[Sphere]
+[Cube]
 name     = "Cube1"
 position = 0.0 6.0 0.0
 animation = "CycleAnim1"
@@ -291,7 +323,7 @@ name     = "KeyCycle82"
 position = 7.07 10.0 -7.07
 
 [Animation]
-name     = "CycleAnim21"
+name     = "CycleAnim2"
 key      = "KeyCycle12"  time = 0.0f
 key      = "KeyCycle22"  time = 1.0f
 key      = "KeyCycle32"  time = 2.0f
@@ -302,7 +334,7 @@ key      = "KeyCycle72"  time = 6.0f
 key      = "KeyCycle82"  time = 7.0f
 key      = "KeyCycle12"  time = 8.0f
 
-[Sphere]
+[Cube]
 name     = "Cube2"
 position = 0.0 4.0 0.0
 animation = "CycleAnim2"
@@ -311,42 +343,34 @@ particleEmitter = Feather
 [AnimationKey]
 name     = "KeyCycle13"
 position = 10.0 8.0 0.0
-rotation =  0.0f 1.0f 0.0f 90.0f
 
 [AnimationKey]
 name     = "KeyCycle23"
-position = 12.07 16.0 -7.07
-rotation =  0.0f 1.0f 0.0f 90.0f
+position = 7.07 10.0 7.07
 
 [AnimationKey]
 name     = "KeyCycle33"
 position = 0.0 12.0 10.0
-rotation =  0.0f 1.0f 0.0f 90.0f
 
 [AnimationKey]
 name     = "KeyCycle43"
-position = -16.07 8.0 7.07
-rotation =  0.0f 1.0f 0.0f 0.0f
+position = -7.07 8.0 7.07
 
 [AnimationKey]
 name     = "KeyCycle53"
-position = -18.0 19.0 0.0
-rotation =  0.0f 1.0f 0.0f -90.0f
+position = -10.0 7.0 0.0
 
 [AnimationKey]
 name     = "KeyCycle63"
 position = -7.07 5.0 -7.07
-rotation =  0.0f 1.0f 0.0f 0.0f
 
 [AnimationKey]
 name     = "KeyCycle73"
 position = 0.0 9.0 -10.0
-rotation =  0.0f 1.0f 0.0f 0.0f
 
 [AnimationKey]
 name     = "KeyCycle83"
 position = 7.07 8.0 -7.07
-rotation =  0.0f 1.0f 0.0f 0.0f
 
 [Animation]
 name     = "CycleAnim3"
@@ -360,14 +384,14 @@ key      = "KeyCycle73"  time = 6.0f
 key      = "KeyCycle83"  time = 7.0f
 key      = "KeyCycle13"  time = 8.0f
 
-[Sphere]
+[Cube]
 name     = "Cube3"
 position = 0.0 8.0 0.0
 animation = "CycleAnim3"
 particleEmitter = Flake
 
 [BoneAnimation]
-name = "DuckFlight"
+name = DuckFlight
 fps = 30
 boneCount = 5
 bone = 0
@@ -408,6 +432,43 @@ rotateKey           angle = -34.174256             time = 18
 rotateKey           angle = -40.020325             time = 20
 
 
+[BoneAnimation]
+name = DuckFall
+fps = 45
+boneCount = 5
+bone = 0
+translateKey        position = 0.0                 time = 1
+translateKey        position = 0.0                 time = 100
+bone = 1
+rotateKey           angle = -40.0                   time = 1
+rotateKey           angle = -55.0                   time = 8
+rotateKey           angle = -40.0                   time = 15
+bone = 2
+rotateKey           angle = -10.0                   time = 4
+rotateKey           angle = -45.0                   time = 11
+rotateKey           angle = -10.0                   time = 18
+bone = 3
+rotateKey           angle = 40.0                   time = 1
+rotateKey           angle = 55.0                   time = 8
+rotateKey           angle = 40.0                   time = 15
+bone = 4
+rotateKey           angle = 10.0                   time = 4
+rotateKey           angle = 45.0                   time = 11
+rotateKey           angle = 10.0                   time = 18
+
+[AnimatedObject LowResDuck]
+name     = duck
+position = 0.0 10.0 0.0
+rotation = 0.0f 1.0f 0.0f 90.0f
+bone = Main       position = 0.0 0.0 0.0
+bone = Wing_R_1   position = 0.37849557 0.0 0.0
+bone = Wing_R_2   position = 0.63251851 0.0 0.0
+bone = Wing_L_1   position = -0.37849557 0.0 0.0
+bone = Wing_L_2   position = -0.63251851 0.0 0.0
+boneParent 1 += 2
+boneParent 3 += 4
+boneAnimation = DuckFlight
+
 [Object Ground]
 name     = ground
 position = 0.0 0.0 0.0
@@ -434,45 +495,3 @@ scaling  = 0.15 0.15 0.15
 rotation = 1.0f -0.5f 0.0f 5.0f
 
 
-[AnimatedObject LowResDuck]
-name     = duck
-position = 0.0 0.0 0.0
-rotation =  0.0f 1.0f 0.0f -90.0f
-animation = "CycleAnim3"
-particleEmitter = Flake
-bone = Main       position = 0.0 0.0 0.0
-bone = Wing_R_1   position = 0.37849557 0.0 0.0
-bone = Wing_R_2   position = 0.63251851 0.0 0.0
-bone = Wing_L_1   position = -0.37849557 0.0 0.0
-bone = Wing_L_2   position = -0.63251851 0.0 0.0
-boneParent 1 += 2
-boneParent 3 += 4
-boneAnimation = "DuckFlight"
-
-[AnimatedObject LowResDuck]
-name     = duck
-position = 0.0 0.0 0.0
-animation = "CycleAnim2"
-particleEmitter = Flake
-bone = Main       position = 0.0 0.0 0.0
-bone = Wing_R_1   position = 0.37849557 0.0 0.0
-bone = Wing_R_2   position = 0.63251851 0.0 0.0
-bone = Wing_L_1   position = -0.37849557 0.0 0.0
-bone = Wing_L_2   position = -0.63251851 0.0 0.0
-boneParent 1 += 2
-boneParent 3 += 4
-boneAnimation = "DuckFlight"
-
-[AnimatedObject LowResDuck]
-name     = duck
-position = 0.0 0.0 0.0
-animation = "CycleAnim1"
-particleEmitter = Flake
-bone = Main       position = 0.0 0.0 0.0
-bone = Wing_R_1   position = 0.37849557 0.0 0.0
-bone = Wing_R_2   position = 0.63251851 0.0 0.0
-bone = Wing_L_1   position = -0.37849557 0.0 0.0
-bone = Wing_L_2   position = -0.63251851 0.0 0.0
-boneParent 1 += 2
-boneParent 3 += 4
-boneAnimation = "DuckFlight"
