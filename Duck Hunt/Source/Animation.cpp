@@ -212,7 +212,7 @@ ci_string Animation::GetName() const
 	return mName;
 }
 
-glm::mat4 Animation::GetAnimationWorldMatrix() const
+glm::mat4 Animation::GetAnimationWorldMatrix() //const
 {
     // @TODO 4 - Find the 2 keys to interpolate the transformation (before and after current time)
     //           Interpolate the position, scaling and rotation separately
@@ -241,12 +241,18 @@ glm::mat4 Animation::GetAnimationWorldMatrix() const
 
 	float interpolation = (loopedTime - mKeyTime[firstKey]) / (mKeyTime[secondKey] - mKeyTime[firstKey]);
 
-	vec3 newPosition       = mKey[firstKey].GetPosition()      * (1 - interpolation) + mKey[secondKey].GetPosition()      * interpolation;
+	//vec3 newPosition       = mKey[firstKey].GetPosition()      * (1 - interpolation) + mKey[secondKey].GetPosition()      * interpolation;
+	mPosition			   = mKey[firstKey].GetPosition()      * (1 - interpolation) + mKey[secondKey].GetPosition()      * interpolation;
 	vec3 newRotationAxis   = mKey[firstKey].GetRotationAxis()  * (1 - interpolation) + mKey[secondKey].GetRotationAxis()  * interpolation;
 	float newRotationAngle = mKey[firstKey].GetRotationAngle() * (1 - interpolation) + mKey[secondKey].GetRotationAngle() * interpolation;
 	vec3 newScaling        = mKey[firstKey].GetScaling()       * (1 - interpolation) + mKey[secondKey].GetScaling()       * interpolation;
 	
-	worldMatrix = translate(mat4(1.0f), newPosition) * rotate(mat4(1.0f), radians(newRotationAngle), newRotationAxis) * scale(mat4(1.0f), newScaling);
+	worldMatrix = translate(mat4(1.0f), mPosition) * rotate(mat4(1.0f), radians(newRotationAngle), newRotationAxis) * scale(mat4(1.0f), newScaling);
     
     return worldMatrix;
+}
+
+glm::vec3 Animation::GetPosition()
+{
+	return mPosition;
 }

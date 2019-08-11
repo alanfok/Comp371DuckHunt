@@ -7,6 +7,7 @@ Bullet::Bullet(vec3 position, vec3 velocity, vec3 size) : SphereModel(size, vec3
 {
 	mPosition = position;
 	mVelocity = velocity;
+	mSize = size;
 }
 //void Bullet::Loading(vec3 cameraPosition,vec3 carmeraLookAt)
 //{   
@@ -38,7 +39,7 @@ void Bullet::Draw() {
 	glBindBuffer(GL_ARRAY_BUFFER, mVBO);
 
 	GLuint WorldMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "WorldTransform");
-	mat4 worldMatrix = translate(mat4(1.0f), mPosition) * rotate(mat4(1.0f), radians(180.0f), vec3(0.0f, 1.0f, 0.0f)) * scale(mat4(1.0f), vec3(0.2f, 0.2f, 0.2f));
+	mat4 worldMatrix = translate(mat4(1.0f), mPosition) * rotate(mat4(1.0f), radians(180.0f), vec3(0.0f, 1.0f, 0.0f)) * scale(mat4(1.0f), mSize);//vec3(0.2f, 0.2f, 0.2f));
 	glUniformMatrix4fv(WorldMatrixLocation, 1, GL_FALSE, &worldMatrix[0][0]);
 
 	GLuint MaterialLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "materialCoefficients");
@@ -148,4 +149,9 @@ int Bullet::createVertexBufferObject()
 */
 Bullet::~Bullet()
 {
+}
+
+glm::vec3 Bullet::GetSize()
+{
+	return mSize;
 }

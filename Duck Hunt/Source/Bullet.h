@@ -22,13 +22,18 @@ using namespace std;
 class Bullet :public SphereModel
 {
 public:
-	Bullet(vec3 position, vec3 velocity, glm::vec3 size = glm::vec3(1.0f, 1.0f, 1.0f));
+	Bullet(vec3 position, vec3 velocity, glm::vec3 size = glm::vec3(0.2f, 0.2f, 0.2f));
 	virtual void Update(float dt);
 	void Draw();
 	~Bullet();
+	glm::vec3 GetSize();
+
+	//glm::vec3 GetPosition() const { return mPosition; }
 private:
 	GLuint mWorldMatrixLocation;
-	vec3 mPosition;
+	//vec3 mPosition;
 	vec3 mVelocity;
+
+	vec3 mSize;
 };
 

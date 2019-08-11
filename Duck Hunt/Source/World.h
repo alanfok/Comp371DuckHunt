@@ -84,6 +84,11 @@ private:
 	bool lastMouseState = false;
 	bool clicked = false;
 
+	bool showCollisionShere = false;
+	bool collisionKeyHeld = false;
+	bool showSkybox = false;
+	bool skyboxKeyHeld = false;
+
     BillboardList* mpBillboardList;
 	BillboardList* mpFeatherBillboardList;
 	BillboardList* mpSnowBillboardList;

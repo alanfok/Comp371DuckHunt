@@ -44,7 +44,8 @@ void FirstPersonCamera::Update(float dt)
 	// Clamp vertical angle to [-85, 85] degrees
 	mVerticalAngle = std::max(-85.0f, std::min(85.0f, mVerticalAngle));
 	// clamp horizontal angle
-	mHorizontalAngle = std::max(70.0f, std::min(120.0f, mHorizontalAngle));
+	//mHorizontalAngle = std::max(70.0f, std::min(120.0f, mHorizontalAngle));
+	mHorizontalAngle = std::max(30.0f, std::min(140.0f, mHorizontalAngle));
 	/*if (mHorizontalAngle > 360)
 	{
 		mHorizontalAngle -= 360;
@@ -62,31 +63,46 @@ void FirstPersonCamera::Update(float dt)
 	vec3 sideVector = glm::cross(mLookAt, vec3(0.0f, 1.0f, 0.0f));
 	glm::normalize(sideVector);
 
-	// A S D W for motion along the camera basis vectors
-	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_W ) == GLFW_PRESS)
+	if (canMove)
 	{
-		//keep camera on the floor; block camera movement in the y axis 
-		mPosition.y = initialPosition.y;
-		mPosition += vec3(mLookAt.x,0.0f, mLookAt.z) * dt * mSpeed;
+		// A S D W for motion along the camera basis vectors
+		if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_W ) == GLFW_PRESS)
+		{
+			//keep camera on the floor; block camera movement in the y axis 
+			mPosition.y = initialPosition.y;
+			mPosition += vec3(mLookAt.x,0.0f, mLookAt.z) * dt * mSpeed;
+		}
 
-			
+		if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_S ) == GLFW_PRESS)
+		{
+			//keep camera on the floor;block camera movement in the y axis 
+			mPosition.y = initialPosition.y;		
+			mPosition -= vec3(mLookAt.x, 0.0f, mLookAt.z) * dt * mSpeed;
+		}
+
+		if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_D ) == GLFW_PRESS)
+		{
+			mPosition += sideVector * dt * mSpeed;
+		}
+
+		if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_A ) == GLFW_PRESS)
+		{
+			mPosition -= sideVector * dt * mSpeed;
+		}
 	}
 
-	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_S ) == GLFW_PRESS)
+	//Turn on or off being allowed to move
+	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_M) == GLFW_PRESS)
 	{
-		//keep camera on the floor;block camera movement in the y axis 
-		mPosition.y = initialPosition.y;		
-		mPosition -= vec3(mLookAt.x, 0.0f, mLookAt.z) * dt * mSpeed;
+		if (!moveKeyHeld)
+		{
+			canMove = !canMove;
+		}
+		moveKeyHeld = true;
 	}
-
-	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_D ) == GLFW_PRESS)
+	else if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_M) == GLFW_RELEASE)
 	{
-		mPosition += sideVector * dt * mSpeed;
-	}
-
-	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_A ) == GLFW_PRESS)
-	{
-		mPosition -= sideVector * dt * mSpeed;
+		moveKeyHeld = false;
 	}
 }
 

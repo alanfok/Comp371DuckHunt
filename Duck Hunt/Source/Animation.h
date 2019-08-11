@@ -43,10 +43,12 @@ public:
     virtual void Draw();
 
     void AddKey(AnimationKey* key, float time);
-	glm::mat4 GetAnimationWorldMatrix() const;
+	glm::mat4 GetAnimationWorldMatrix(); //const;
 
 	void Load(ci_istringstream& iss);
 	ci_string GetName() const;
+
+	glm::vec3 GetPosition();
 
 protected:
     virtual bool ParseLine(const std::vector<ci_string> &token);
@@ -71,4 +73,6 @@ private:
     std::vector<Vertex> mVertexBuffer;
     unsigned int mVAO;
     unsigned int mVBO;
+
+	glm::vec3 mPosition;
 };
