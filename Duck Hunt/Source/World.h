@@ -16,6 +16,7 @@
 #include <string>
 #include "Bullet.h"
 #include "Lighting.h"
+#include "SkyBox.h"
 
 
 class Camera;
@@ -77,6 +78,7 @@ private:
     std::vector<ParticleSystem*> mParticleSystemList;
     std::vector<ParticleDescriptor*> mParticleDescriptorList;
 	list<Bullet*> bulletList;
+	SkyBox* mSkybox;
 	unsigned int mCurrentCamera;
 
 	bool lastMouseState = false;

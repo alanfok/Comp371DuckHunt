@@ -18,7 +18,7 @@ Lighting::Lighting()
 
 	//distanceFogColor = glm::vec3(0.294f, 0.78f, 0.98f); //Original duck hunt background
 	distanceFogColor = glm::vec3(0.663f, 0.749f, 0.792f); //Winter sky
-	distanceFogDetails = glm::vec3(16.0f, 64.0f, 1.0f);
+	distanceFogDetails = glm::vec3(24.0f, 72.0f, 0.75f);
 
 	lightView = glm::lookAt(-vec3(sunlight),		// Camera position
 							vec3(sunlight),			// Look towards this point
