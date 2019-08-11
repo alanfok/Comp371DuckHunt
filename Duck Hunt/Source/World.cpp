@@ -45,6 +45,8 @@ World::World()
 	mCamera.push_back(new StaticCamera(vec3(3.0f, 30.0f, 5.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f)));
 	mCamera.push_back(new StaticCamera(vec3(0.5f,  0.5f, 5.0f), vec3(0.0f, 0.5f, 0.0f), vec3(0.0f, 1.0f, 0.0f)));
 	mCurrentCamera = 0;
+	mSkybox = new SkyBox();
+
 
     
 #if defined(PLATFORM_OSX)
@@ -339,10 +341,10 @@ void World::Draw()
 
 	// Send the view projection constants to the shader
 	mat4 VP = mCamera[mCurrentCamera]->GetViewProjectionMatrix();
+	mat4 VMatrix = mCamera[mCurrentCamera]->GetViewMatrix();
+	mat4 PMatrix = mCamera[mCurrentCamera]->GetProjectionMatrix();
 	glUniformMatrix4fv(VPMatrixLocation, 1, GL_FALSE, &VP[0][0]);
 
-	//mat4 VMatrix = mCamera[mCurrentCamera]->GetViewMatrix();
-	//mat4 PMatrix = mCamera[mCurrentCamera]->GetProjectionMatrix();
 	glUniformMatrix4fv(VMatrixLocation, 1, GL_FALSE, &mCamera[mCurrentCamera]->GetViewMatrix()[0][0]);
 	glUniformMatrix4fv(PMatrixLocation, 1, GL_FALSE, &mCamera[mCurrentCamera]->GetProjectionMatrix()[0][0]);
 
@@ -399,6 +401,12 @@ void World::Draw()
 	mpSnowBillboardList->Draw();
     glDisable(GL_BLEND);
 
+
+	// Draw Skybox at the end
+	Renderer::SetShader(SKYBOX_SHADER);
+	glUseProgram(Renderer::GetShaderProgramID());
+	//Draw Skybox
+	mSkybox->Draw(VMatrix, PMatrix);
 
 	// Restore previous shader
 	Renderer::SetShader((ShaderType) prevShader);
