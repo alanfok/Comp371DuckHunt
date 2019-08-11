@@ -1,0 +1,23 @@
+#version 330 core
+
+// Input vertex data
+layout(location = 0) in vec3 position;
+
+// Outputs to fragment shader
+out vec3 TexCoords; 
+
+// Values that stay constant for the whole mesh.
+uniform mat4 ViewTransform;
+uniform mat4 ProjectonTransform;
+
+
+  
+
+
+void main()
+{
+	vec4 m_position=ProjectonTransform*ViewTransform*vec4(position,1.0f);
+	gl_Position=m_position.xyww;
+	TexCoords=position;
+}
+

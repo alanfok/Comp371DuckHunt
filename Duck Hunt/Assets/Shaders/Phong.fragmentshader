@@ -135,7 +135,6 @@ void main()
 	if (vertexDistance > distanceFogDetails.x)
 	{
 		float fogLerp = min(1.0f, (vertexDistance - distanceFogDetails.x) / (distanceFogDetails.y - distanceFogDetails.x)) * distanceFogDetails.z;
-
 		color = distanceFogColor * fogLerp + (1 - fogLerp) * finalColor;
 	}
 	else

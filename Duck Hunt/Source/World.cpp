@@ -45,7 +45,7 @@ World::World()
 	mCamera.push_back(new StaticCamera(vec3(3.0f, 30.0f, 5.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f)));
 	mCamera.push_back(new StaticCamera(vec3(0.5f,  0.5f, 5.0f), vec3(0.0f, 0.5f, 0.0f), vec3(0.0f, 1.0f, 0.0f)));
 	mCurrentCamera = 0;
-
+	mSkybox = new SkyBox();
     
 #if defined(PLATFORM_OSX)
 //    int billboardTextureID = TextureLoader::LoadTexture("Textures/BillboardTest.bmp");
@@ -133,6 +133,7 @@ World::~World()
 	delete mpSnowBillboardList;
 
 	delete mpWorldLighting;
+	delete mSkybox;
 }
 
 World* World::GetInstance()
@@ -325,10 +326,12 @@ void World::Draw()
 
 	// Send the view projection constants to the shader
 	mat4 VP = mCamera[mCurrentCamera]->GetViewProjectionMatrix();
+	mat4 VMatrix = mCamera[mCurrentCamera]->GetViewMatrix();
+	mat4 PMatrix = mCamera[mCurrentCamera]->GetProjectionMatrix();
 	glUniformMatrix4fv(VPMatrixLocation, 1, GL_FALSE, &VP[0][0]);
 
-	//mat4 VMatrix = mCamera[mCurrentCamera]->GetViewMatrix();
-	//mat4 PMatrix = mCamera[mCurrentCamera]->GetProjectionMatrix();
+	
+
 	glUniformMatrix4fv(VMatrixLocation, 1, GL_FALSE, &mCamera[mCurrentCamera]->GetViewMatrix()[0][0]);
 	glUniformMatrix4fv(PMatrixLocation, 1, GL_FALSE, &mCamera[mCurrentCamera]->GetProjectionMatrix()[0][0]);
 
@@ -343,7 +346,7 @@ void World::Draw()
 	//Drwa bullets
 	for (list<Bullet*>::iterator it = bulletList.begin(); it != bulletList.end(); ++it)
 	{
-		(*it)->Draw();
+		//(*it)->Draw();
 	}
 	// Draw Path Lines
 	
@@ -361,9 +364,10 @@ void World::Draw()
 	for (vector<Animation*>::iterator it = mAnimation.begin(); it < mAnimation.end(); ++it)
 	{
 		mat4 VP = mCamera[mCurrentCamera]->GetViewProjectionMatrix();
+
 		glUniformMatrix4fv(VPMatrixLocation, 1, GL_FALSE, &VP[0][0]);
 
-		(*it)->Draw();
+	//	(*it)->Draw();
 	}
 
 	for (vector<AnimationKey*>::iterator it = mAnimationKey.begin(); it < mAnimationKey.end(); ++it)
@@ -377,19 +381,25 @@ void World::Draw()
     Renderer::CheckForErrors();
     
     // Draw Billboards
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    mpBillboardList->Draw();
-	mpFeatherBillboardList->Draw();
-	mpFlakeBillboardList->Draw();
-	mpSnowBillboardList->Draw();
-    glDisable(GL_BLEND);
+   /// glEnable(GL_BLEND);
+   // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+   // mpBillboardList->Draw();
+	//mpFeatherBillboardList->Draw();
+	//mpFlakeBillboardList->Draw();
+	//mpSnowBillboardList->Draw();
+   // glDisable(GL_BLEND);
 
+	Renderer::SetShader(SKYBOX_SHADER);
+	glUseProgram(Renderer::GetShaderProgramID());
+	//Draw Skybox
+	mSkybox->Draw(VMatrix, PMatrix);
+	
 
 	// Restore previous shader
 	Renderer::SetShader((ShaderType) prevShader);
-
 	Renderer::EndFrame();
+	
+
 }
 
 void World::LoadScene(const char * scene_path)
@@ -443,7 +453,7 @@ void World::LoadScene(const char * scene_path)
             {
                 ParticleDescriptor* psd = new ParticleDescriptor();
                 psd->Load(iss);
-                AddParticleDescriptor(psd);
+               AddParticleDescriptor(psd);
             }
 			else if (result.size() > 6 && result.substr(0, 6) == "Object")
 			{
