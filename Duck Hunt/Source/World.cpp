@@ -173,6 +173,20 @@ void World::Update(float dt)
 		Renderer::SetShader(SHADER_BLUE);
 	}
 
+
+	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_7) == GLFW_PRESS)
+	{
+		AnimatedObjModel* duck = (AnimatedObjModel*)FindModel("duck");
+		BoneAnimation* duckFlight = FindBoneAnimation("DuckFlight");
+		duck->attachBoneAnimation(duckFlight);
+	}
+	else if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_8) == GLFW_PRESS)
+	{
+		AnimatedObjModel* duck = (AnimatedObjModel*)FindModel("duck");
+		BoneAnimation* duckFall = FindBoneAnimation("DuckFall");
+		duck->attachBoneAnimation(duckFall);
+	}
+
 	mInverseViewMatrix = glm::inverse(GetCurrentCamera()->GetViewMatrix());
 
 	// shooting function
@@ -681,6 +695,18 @@ BoneAnimation* World::FindBoneAnimation(ci_string animName)
 	for (std::vector<BoneAnimation*>::iterator it = mBoneAnimation.begin(); it < mBoneAnimation.end(); ++it)
 	{
 		if ((*it)->GetName() == animName)
+		{
+			return *it;
+		}
+	}
+	return nullptr;
+}
+
+Model* World::FindModel(ci_string name)
+{
+	for (std::vector<Model*>::iterator it = mModel.begin(); it < mModel.end(); ++it)
+	{
+		if ((*it)->GetName() == name)
 		{
 			return *it;
 		}

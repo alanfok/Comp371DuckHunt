@@ -42,6 +42,7 @@ public:
     AnimationKey* FindAnimationKey(ci_string keyName);
     ParticleDescriptor* FindParticleDescriptor(ci_string name);
 	BoneAnimation* FindBoneAnimation(ci_string animName);
+	Model* FindModel(ci_string name);
 
     const Camera* GetCurrentCamera() const;
     void AddBillboard(Billboard* b, ci_string particleTexture);
