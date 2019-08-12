@@ -9,10 +9,12 @@ uniform vec3 lightAttenuation; // x: kC  y: kL  z: kQ
 uniform vec3 gunLightColor;
 uniform vec3 distanceFogColor;
 uniform vec3 distanceFogDetails; //x: start distance, y: lerp finish distance, z: alpha
+uniform sampler2D myTextureSampler;
 
 
 // Inputs
 in vec3 v_color;		 // vertex color: also diffuse color
+in vec2 UV;
 
 in vec3 normal;          // Transformed normal in View Space
 in vec3 eyeVector;       // Vector from the vertex to the Camera in View Space
@@ -31,9 +33,9 @@ void main()
 {
 	// Implment Phong Shading based on the parameters above
 	// Remember that directional light don't have attenuation
-
+	vec4 textureColor = texture( myTextureSampler, UV );
+	vec3 vc_color =  vec3(textureColor);
 	
-
 	// Calculate normalized vectors
 	vec3 nNormal = normalize(normal);
 	vec3 nEyeVector = normalize(eyeVector);
@@ -72,7 +74,7 @@ void main()
 	}*/
 
 	// Calculate the final color. Specular is kept outside as it is a direct reflection of the light, rather than a direct manifestation of the material's color. Better result.
-	vec3 sunlightColor = v_color * (visibility * diffuse + ambient) + visibility * specular;
+	vec3 sunlightColor = vc_color * (visibility * diffuse + ambient) + visibility * specular;
 
 
 	//Backlight
@@ -98,7 +100,7 @@ void main()
 	}
 
 	// Calculate the final color. Specular is kept outside as it is a direct reflection of the light, rather than a direct manifestation of the material's color. Better result.
-	vec3 backlightColor = v_color * diffuse + specular;
+	vec3 backlightColor = vc_color * diffuse + specular;
 
 	
 	//GunLight
@@ -125,7 +127,7 @@ void main()
 	}
 
 	// Calculate the final color. Specular is kept outside as it is a direct reflection of the light, rather than a direct manifestation of the material's color. Better result.
-	vec3 gunLightColor = v_color * (diffuse + ambient) + specular; 
+	vec3 gunLightColor = vc_color * (diffuse + ambient) + specular; 
 	
 	vec3 finalColor = sunlightColor + backlightColor + gunLightColor;
 
