@@ -85,11 +85,15 @@ private:
 	bool clicked = false;
 	int smokeShotTimer = 0;
 	int smokeShotDelay = 0;
+	int collisionTimer = 0;
+	glm::vec3 duckFeatherPosition;
 
 	bool showCollisionShere = false;
 	bool collisionKeyHeld = false;
 	bool showSkybox = false;
 	bool skyboxKeyHeld = false;
+	bool fogNear = false;
+	bool fogKeyHeld = false;
 
     BillboardList* mpBillboardList;
 	BillboardList* mpFeatherBillboardList;
