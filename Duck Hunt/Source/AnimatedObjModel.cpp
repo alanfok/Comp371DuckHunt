@@ -46,25 +46,25 @@ AnimatedObjModel::AnimatedObjModel(std::string fileName) : ObjModel(fileName)
 	glEnableVertexAttribArray(0);
 
 	// 2nd attribute buffer : vertex uv
-	glVertexAttribPointer(1,
+	glVertexAttribPointer(3,
 		2,
 		GL_FLOAT,
 		GL_FALSE,
 		sizeof(Vertex),
 		(void*)sizeof(vec3)    // UV is offseted by one vec3
 	);
-	glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(3);
 
 
 	// 3rd attribute buffer : vertex normal
-	glVertexAttribPointer(2,
+	glVertexAttribPointer(1,
 		3,
 		GL_FLOAT,
 		GL_FALSE,
 		sizeof(Vertex),
 		(void*)(sizeof(vec3) + sizeof(vec2)) // Normal is offsetted by a vec3 and vec2
 	);
-	glEnableVertexAttribArray(2);
+	glEnableVertexAttribArray(1);
 }
 
 AnimatedObjModel::~AnimatedObjModel()
