@@ -49,6 +49,8 @@ public:
 	ci_string GetName() const;
 
 	glm::vec3 GetPosition();
+	glm::vec3 GetRotationAxis();
+	float GetRotationAngle();
 
 protected:
     virtual bool ParseLine(const std::vector<ci_string> &token);
@@ -75,4 +77,6 @@ private:
     unsigned int mVBO;
 
 	glm::vec3 mPosition;
+	glm::vec3 mRotationAxis;
+	float mRotationAngle;
 };

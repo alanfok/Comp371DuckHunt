@@ -94,6 +94,9 @@ private:
 	bool skyboxKeyHeld = false;
 	bool fogNear = false;
 	bool fogKeyHeld = false;
+	bool duckDeathEnabled = false;
+	bool deathKeyHeld = false;
+	bool newDuckKeyHeld = false;
 
     BillboardList* mpBillboardList;
 	BillboardList* mpFeatherBillboardList;

@@ -38,6 +38,7 @@ int SnowGroundTextureID;
 int treeTextureID;
 int gunTextureID;
 int duckTextureID;
+int bulletTextureID;
 
 World::World()
 {
@@ -66,6 +67,7 @@ World::World()
 	treeTextureID = TextureLoader::LoadTexture("../Assets/Textures/tree_texture.png");
 	gunTextureID = TextureLoader::LoadTexture("../Assets/Textures/gun_texture.png");
 	duckTextureID = TextureLoader::LoadTexture("../Assets/Textures/duck_texture.png");
+	bulletTextureID = TextureLoader::LoadTexture("../Assets/Textures/Bullet.png");
 #endif
     assert(billboardTextureID != 0);
 
@@ -213,6 +215,39 @@ void World::Update(float dt)
 	else if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_F) == GLFW_RELEASE)
 	{
 		fogKeyHeld = false;
+	}
+
+	//Turn on or off making the duck able to die
+	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_X) == GLFW_PRESS)
+	{
+		if (!deathKeyHeld)
+		{
+			duckDeathEnabled = !duckDeathEnabled;
+		}
+		deathKeyHeld = true;
+	}
+	else if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_X) == GLFW_RELEASE)
+	{
+		deathKeyHeld = false;
+	}
+
+	//Turn on or off making the duck able to die
+	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_N) == GLFW_PRESS)
+	{
+		if (!newDuckKeyHeld)
+		{
+			AnimatedObjModel* duck = (AnimatedObjModel*)FindModel("duck");
+			BoneAnimation* duckFlight = FindBoneAnimation("DuckFlight");
+			duck->attachBoneAnimation(duckFlight);
+			duck->dead = false;
+			duck->deathDelay = 24;
+			duck->deathTimer = 0.0f;
+		}
+		newDuckKeyHeld = true;
+	}
+	else if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_N) == GLFW_RELEASE)
+	{
+		newDuckKeyHeld = false;
 	}
 
 	// Spacebar to change the shader
@@ -372,6 +407,17 @@ void World::Update(float dt)
 				duckFeatherPosition = vec3((*it_d)->GetPosition());
 				collisionTimer = 10;
 				clearBullet = (*it_b);
+
+				if (duckDeathEnabled)
+				{
+					AnimatedObjModel* duck = (AnimatedObjModel*)FindModel("duck");
+					BoneAnimation* duckFall = FindBoneAnimation("DuckFall");
+					duck->attachBoneAnimation(duckFall);
+					duck->dead = true;
+					duck->deathStartPosition = (*it_d)->GetPosition();
+					duck->deathRotationAxis = (*it_d)->GetRotationAxis();
+					duck->deathRotationAngle = (*it_d)->GetRotationAngle();
+				}
 			}
 		}
 	}
@@ -543,7 +589,11 @@ void World::Draw()
 		}
 	}
 
-	//Drwa bullets
+	//Draw bullets
+	glActiveTexture(GL_TEXTURE0);
+	GLuint textureLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "myTextureSampler");
+	glBindTexture(GL_TEXTURE_2D, bulletTextureID);
+	glUniform1i(textureLocation, 0);
 	for (list<Bullet*>::iterator it = bulletList.begin(); it != bulletList.end(); ++it)
 	{
 		(*it)->Draw();

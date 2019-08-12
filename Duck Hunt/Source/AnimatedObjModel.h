@@ -21,6 +21,14 @@ public:
 	void attachBoneAnimation(BoneAnimation* anim);
 	void removeBoneAnimation();
 
+	bool dead = false;
+	glm::vec3 deathStartPosition;
+	glm::vec3 deathRotationAxis;
+	glm::vec3 deathEndVector = glm:: vec3(0.0f, -1.0f, 0.0f);
+	float deathTimer = 0.0f;
+	int deathDelay = 24;
+	float deathRotationAngle;
+
 protected:
 	virtual bool ParseLine(const std::vector<ci_string> &token);
 	bool createModel(const char * fileName);
