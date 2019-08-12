@@ -523,20 +523,23 @@ void World::Draw()
 	VPMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "ViewProjectionTransform");
 	glUniformMatrix4fv(VPMatrixLocation, 1, GL_FALSE, &VP[0][0]);
 
-	for (vector<Animation*>::iterator it = mAnimation.begin(); it < mAnimation.end(); ++it)
+	if (showCollisionShere)
 	{
-		mat4 VP = mCamera[mCurrentCamera]->GetViewProjectionMatrix();
-		glUniformMatrix4fv(VPMatrixLocation, 1, GL_FALSE, &VP[0][0]);
+		for (vector<Animation*>::iterator it = mAnimation.begin(); it < mAnimation.end(); ++it)
+		{
+			mat4 VP = mCamera[mCurrentCamera]->GetViewProjectionMatrix();
+			glUniformMatrix4fv(VPMatrixLocation, 1, GL_FALSE, &VP[0][0]);
 
-		(*it)->Draw();
-	}
+			(*it)->Draw();
+		}
 
-	for (vector<AnimationKey*>::iterator it = mAnimationKey.begin(); it < mAnimationKey.end(); ++it)
-	{
-		mat4 VP = mCamera[mCurrentCamera]->GetViewProjectionMatrix();
-		glUniformMatrix4fv(VPMatrixLocation, 1, GL_FALSE, &VP[0][0]);
+		for (vector<AnimationKey*>::iterator it = mAnimationKey.begin(); it < mAnimationKey.end(); ++it)
+		{
+			mat4 VP = mCamera[mCurrentCamera]->GetViewProjectionMatrix();
+			glUniformMatrix4fv(VPMatrixLocation, 1, GL_FALSE, &VP[0][0]);
 
-		(*it)->Draw();
+			(*it)->Draw();
+		}
 	}
 
     Renderer::CheckForErrors();
