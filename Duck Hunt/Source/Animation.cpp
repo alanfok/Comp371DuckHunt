@@ -244,7 +244,24 @@ glm::mat4 Animation::GetAnimationWorldMatrix() //const
 	//vec3 newPosition       = mKey[firstKey].GetPosition()      * (1 - interpolation) + mKey[secondKey].GetPosition()      * interpolation;
 	mPosition			   = mKey[firstKey].GetPosition()      * (1 - interpolation) + mKey[secondKey].GetPosition()      * interpolation;
 	vec3 newRotationAxis   = mKey[firstKey].GetRotationAxis()  * (1 - interpolation) + mKey[secondKey].GetRotationAxis()  * interpolation;
-	float newRotationAngle = mKey[firstKey].GetRotationAngle() * (1 - interpolation) + mKey[secondKey].GetRotationAngle() * interpolation;
+
+	float firstKeyAngle = mKey[firstKey].GetRotationAngle();
+	float secondKeyAngle = mKey[secondKey].GetRotationAngle();
+	if (firstKeyAngle > secondKeyAngle)
+	{
+		if (firstKeyAngle - secondKeyAngle > (secondKeyAngle + 360) - firstKeyAngle)
+		{
+			secondKeyAngle += 360;
+		}
+	}
+	else if (firstKeyAngle < secondKeyAngle)
+	{
+		if (secondKeyAngle - firstKeyAngle >(firstKeyAngle + 360) - secondKeyAngle)
+		{
+			firstKeyAngle += 360;
+		}
+	}
+	float newRotationAngle = firstKeyAngle * (1 - interpolation) + secondKeyAngle * interpolation;
 	vec3 newScaling        = mKey[firstKey].GetScaling()       * (1 - interpolation) + mKey[secondKey].GetScaling()       * interpolation;
 	
 	worldMatrix = translate(mat4(1.0f), mPosition) * rotate(mat4(1.0f), radians(newRotationAngle), newRotationAxis) * scale(mat4(1.0f), newScaling);
