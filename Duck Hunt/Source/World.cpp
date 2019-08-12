@@ -193,6 +193,20 @@ void World::Update(float dt)
 		skyboxKeyHeld = false;
 	}
 
+	//Turn on or off making the fog nearer
+	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_F) == GLFW_PRESS)
+	{
+		if (!fogKeyHeld)
+		{
+			fogNear = !fogNear;
+		}
+		fogKeyHeld = true;
+	}
+	else if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_F) == GLFW_RELEASE)
+	{
+		fogKeyHeld = false;
+	}
+
 	// Spacebar to change the shader
 	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_0 ) == GLFW_PRESS)
 	{
@@ -287,6 +301,10 @@ void World::Update(float dt)
 				(*it)->SetPosition(vec3(1000.0f, 1000.0f, 1000.0f));
 			}
 		}
+		else if ((*it)->GetName() == "\"DuckCube\"")
+		{
+			//Do nothing here
+		}
 		else
 		{
 			(*it)->Update(dt);
@@ -318,6 +336,10 @@ void World::Update(float dt)
 
 	//Collision
 
+	if (collisionTimer == 0)
+	{
+		duckFeatherPosition = vec3(1000.0f, 1000.0f, 1000.0f);
+	}
 	Bullet* clearBullet = NULL;
 	for (vector<Animation*>::iterator it_d = mAnimation.begin(); it_d < mAnimation.end(); ++it_d)
 	{
@@ -339,6 +361,8 @@ void World::Update(float dt)
 				{
 					printf("I like turtles\n");
 				}
+				duckFeatherPosition = vec3((*it_d)->GetPosition());
+				collisionTimer = 10;
 				clearBullet = (*it_b);
 			}
 		}
@@ -347,6 +371,23 @@ void World::Update(float dt)
 	{
 		//printf("I also like turtles\n");
 		bulletList.remove(clearBullet);
+	}
+
+	// Update models
+	for (vector<Model*>::iterator it = mModel.begin(); it < mModel.end(); ++it)
+	{
+		if ((*it)->GetName() == "\"DuckCube\"")
+		{
+			(*it)->SetPosition(duckFeatherPosition);
+		}
+		else
+		{
+			//Do nothing here
+		}
+	}
+	if (collisionTimer > 0)
+	{
+		collisionTimer -= 1;
 	}
 }
 
@@ -451,6 +492,10 @@ void World::Draw()
 
 		}
 		else if (!showCollisionShere && (*it)->GetName() == "\"GunCube\"")
+		{
+
+		}
+		else if (!showCollisionShere && (*it)->GetName() == "\"DuckCube\"")
 		{
 
 		}
@@ -777,7 +822,14 @@ vec3 World::GetDistanceFogColor()
 
 vec3 World::GetDistanceFogDetails()
 {
-	return mpWorldLighting->GetDistanceFogDetails();
+	if (!fogNear)
+	{
+		return mpWorldLighting->GetDistanceFogDetails(); //Normal distance fog
+	}
+	else
+	{
+		return vec3(4.0f, 16.0f, 0.9f); //Hardcoded closer fog to show it off
+	}
 }
 
 ParticleDescriptor* World::FindParticleDescriptor(ci_string name)
