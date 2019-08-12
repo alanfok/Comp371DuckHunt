@@ -306,55 +306,58 @@ bool AnimatedObjModel::createWeights(std::string boneName)
 
 void AnimatedObjModel::updateVertex()
 {
-	boneAnimation->calculateAnimation(); // Precalculate the angle rotation of each bone of current frame.
+	if (!dead || deathDelay == 0)
+	{
+		boneAnimation->calculateAnimation(); // Precalculate the angle rotation of each bone of current frame.
 
-	float noWeightMove = 0; // Y-translation for vertices that are not weighted to any bone except the Main one.
-	bool noWeightCalculated = false;
-	for (int i = 0; i < vertexBuffer.size(); i++) {
-		Vertex vertex;
-		bool nonWeighted = true;
-		for (int j = 1; j < vertexWeights[i].size(); j++) {
-			if (vertexWeights[i][j] > 0.002) {
-				nonWeighted = false;
-				break;
-			}
-		}
-		if (nonWeighted) // Case: It does not have any weight on the wings.
-		{
-			if (!noWeightCalculated) {
-				noWeightMove = boneAnimation->GetAnimationWorldMatrix(bonePositions, vertexWeights[i])[3][1];
-				noWeightCalculated = true;
-			}
-			vertex.position = vec3(vertexBuffer[i].position.x, vertexBuffer[i].position.y + noWeightMove, vertexBuffer[i].position.z);
-			vertex.normal = vertexBuffer[i].normal;
-		}
-		else {
-			int identical = 0;
-			if (i > 3 && vertexBuffer[i].position == vertexBuffer[i - 3].position) identical = -3;
-			else if (i > 2 && vertexBuffer[i].position == vertexBuffer[i - 2].position) identical = -2;
-			else if (i > 1 && vertexBuffer[i].position == vertexBuffer[i - 1].position) identical = -1;
-			if (identical < 0) // Case: An identical vertex has already been calculated before.
-			{
-				vertex.position = animatedVertexBuffer[i + identical].position;
-				if (vertexBuffer[i].normal == vertexBuffer[i + identical].normal) vertex.normal = animatedVertexBuffer[i + identical].normal;
-				else {
-					//vertex.normal = vec3(transpose(inverse(boneAnimationMatrix)) * vec4(vertexBuffer[i].normal, 0.0f));
-					vertex.normal = animatedVertexBuffer[i+identical].normal;
+		float noWeightMove = 0; // Y-translation for vertices that are not weighted to any bone except the Main one.
+		bool noWeightCalculated = false;
+		for (int i = 0; i < vertexBuffer.size(); i++) {
+			Vertex vertex;
+			bool nonWeighted = true;
+			for (int j = 1; j < vertexWeights[i].size(); j++) {
+				if (vertexWeights[i][j] > 0.002) {
+					nonWeighted = false;
+					break;
 				}
 			}
-			else // Case: Brand new vertex. Big chunk of the calculation
+			if (nonWeighted) // Case: It does not have any weight on the wings.
 			{
-				mat4 boneAnimationMatrix = boneAnimation->GetAnimationWorldMatrix(bonePositions, vertexWeights[i]);
-				vertex.position = vec3(boneAnimationMatrix * vec4(vertexBuffer[i].position, 1.0f));
-				//vertex.normal = vec3(transpose(inverse(boneAnimationMatrix)) * vec4(vertexBuffer[i].normal, 0.0f));
+				if (!noWeightCalculated) {
+					noWeightMove = boneAnimation->GetAnimationWorldMatrix(bonePositions, vertexWeights[i])[3][1];
+					noWeightCalculated = true;
+				}
+				vertex.position = vec3(vertexBuffer[i].position.x, vertexBuffer[i].position.y + noWeightMove, vertexBuffer[i].position.z);
 				vertex.normal = vertexBuffer[i].normal;
 			}
+			else {
+				int identical = 0;
+				if (i > 3 && vertexBuffer[i].position == vertexBuffer[i - 3].position) identical = -3;
+				else if (i > 2 && vertexBuffer[i].position == vertexBuffer[i - 2].position) identical = -2;
+				else if (i > 1 && vertexBuffer[i].position == vertexBuffer[i - 1].position) identical = -1;
+				if (identical < 0) // Case: An identical vertex has already been calculated before.
+				{
+					vertex.position = animatedVertexBuffer[i + identical].position;
+					if (vertexBuffer[i].normal == vertexBuffer[i + identical].normal) vertex.normal = animatedVertexBuffer[i + identical].normal;
+					else {
+						//vertex.normal = vec3(transpose(inverse(boneAnimationMatrix)) * vec4(vertexBuffer[i].normal, 0.0f));
+						vertex.normal = animatedVertexBuffer[i+identical].normal;
+					}
+				}
+				else // Case: Brand new vertex. Big chunk of the calculation
+				{
+					mat4 boneAnimationMatrix = boneAnimation->GetAnimationWorldMatrix(bonePositions, vertexWeights[i]);
+					vertex.position = vec3(boneAnimationMatrix * vec4(vertexBuffer[i].position, 1.0f));
+					//vertex.normal = vec3(transpose(inverse(boneAnimationMatrix)) * vec4(vertexBuffer[i].normal, 0.0f));
+					vertex.normal = vertexBuffer[i].normal;
+				}
 			
+			}
+			vertex.uv = vertexBuffer[i].uv;
+			animatedVertexBuffer[i] = vertex;
+			//std::cout << "before: " << vertexBuffer[i].position.x << "," << vertexBuffer[i].position.y << "," << vertexBuffer[i].position.z << 
+			//	        ", after: " << vertex.position.x << "," << vertex.position.y << "," << vertex.position.z << "\n";
 		}
-		vertex.uv = vertexBuffer[i].uv;
-		animatedVertexBuffer[i] = vertex;
-		//std::cout << "before: " << vertexBuffer[i].position.x << "," << vertexBuffer[i].position.y << "," << vertexBuffer[i].position.z << 
-		//	        ", after: " << vertex.position.x << "," << vertex.position.y << "," << vertex.position.z << "\n";
 	}
 }
 

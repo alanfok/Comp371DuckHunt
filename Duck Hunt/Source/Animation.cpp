@@ -12,6 +12,7 @@
 #include "World.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/quaternion.hpp>
+#include "AnimatedObjModel.h"
 
 using namespace glm;
 using namespace std;
@@ -239,11 +240,13 @@ glm::mat4 Animation::GetAnimationWorldMatrix() //const
 		}
 	}
 
+	AnimatedObjModel* duck = (AnimatedObjModel*)World::GetInstance()->FindModel("duck");
+
 	float interpolation = (loopedTime - mKeyTime[firstKey]) / (mKeyTime[secondKey] - mKeyTime[firstKey]);
 
 	//vec3 newPosition       = mKey[firstKey].GetPosition()      * (1 - interpolation) + mKey[secondKey].GetPosition()      * interpolation;
-	mPosition			   = mKey[firstKey].GetPosition()      * (1 - interpolation) + mKey[secondKey].GetPosition()      * interpolation;
-	vec3 newRotationAxis   = mKey[firstKey].GetRotationAxis()  * (1 - interpolation) + mKey[secondKey].GetRotationAxis()  * interpolation;
+	mPosition = mKey[firstKey].GetPosition()      * (1 - interpolation) + mKey[secondKey].GetPosition()      * interpolation;
+	mRotationAxis = mKey[firstKey].GetRotationAxis()  * (1 - interpolation) + mKey[secondKey].GetRotationAxis()  * interpolation;
 
 	float firstKeyAngle = mKey[firstKey].GetRotationAngle();
 	float secondKeyAngle = mKey[secondKey].GetRotationAngle();
@@ -261,10 +264,31 @@ glm::mat4 Animation::GetAnimationWorldMatrix() //const
 			firstKeyAngle += 360;
 		}
 	}
-	float newRotationAngle = firstKeyAngle * (1 - interpolation) + secondKeyAngle * interpolation;
-	vec3 newScaling        = mKey[firstKey].GetScaling()       * (1 - interpolation) + mKey[secondKey].GetScaling()       * interpolation;
+	mRotationAngle = firstKeyAngle * (1 - interpolation) + secondKeyAngle * interpolation;
+	vec3 newScaling = mKey[firstKey].GetScaling()       * (1 - interpolation) + mKey[secondKey].GetScaling()       * interpolation;
+
+	if (duck->dead)
+	{
+		if (duck->deathDelay > 0)
+		{
+			mPosition = duck->deathStartPosition;
+			mRotationAxis = duck->deathRotationAxis;
+			duck->deathDelay -= 1;
+			mRotationAngle = duck->deathRotationAngle;
+		}
+		else
+		{
+			mPosition = duck->deathStartPosition + duck->deathEndVector * duck->deathTimer;
+			//mRotationAngle = 270.0f;
+			//mRotationAxis = vec3(1.0f, 0.0f, 0.0f);
+			duck->deathTimer += 0.35f;
+
+			mRotationAngle = 180;
+			mRotationAxis = vec3(0.0f, 0.0f, 1.0f);
+		}
+	}
 	
-	worldMatrix = translate(mat4(1.0f), mPosition) * rotate(mat4(1.0f), radians(newRotationAngle), newRotationAxis) * scale(mat4(1.0f), newScaling);
+	worldMatrix = translate(mat4(1.0f), mPosition) * rotate(mat4(1.0f), radians(mRotationAngle), mRotationAxis) * scale(mat4(1.0f), newScaling);
     
     return worldMatrix;
 }
@@ -272,4 +296,14 @@ glm::mat4 Animation::GetAnimationWorldMatrix() //const
 glm::vec3 Animation::GetPosition()
 {
 	return mPosition;
+}
+
+glm::vec3 Animation::GetRotationAxis()
+{
+	return mRotationAxis;
+}
+
+float Animation::GetRotationAngle()
+{
+	return mRotationAngle;
 }

@@ -127,7 +127,7 @@ void Lighting::Update()
 
 	if (timer > 0)
 	{
-		gunLight = glm::vec4(camLookAt + cameraPosition, 1.0f);
+		gunLight = glm::vec4(camLookAt * 5.0f + cameraPosition, 1.0f);
 	}
 	else
 	{
