@@ -34,7 +34,10 @@ using namespace std;
 using namespace glm;
 
 World* World::instance;
-
+int SnowGroundTextureID;
+int treeTextureID;
+int gunTextureID;
+int duckTextureID;
 
 World::World()
 {
@@ -58,6 +61,11 @@ World::World()
 	int featherBillboardTextureID = TextureLoader::LoadTexture("../Assets/Textures/Feather.png");
 	int flakeBillboardTextureID = TextureLoader::LoadTexture("../Assets/Textures/flake.png");
 	int snowBillboardTextureID = TextureLoader::LoadTexture("../Assets/Textures/snow.png");
+
+	SnowGroundTextureID = TextureLoader::LoadTexture("../Assets/Textures/snow_texture.png");
+	treeTextureID = TextureLoader::LoadTexture("../Assets/Textures/tree_texture.png");
+	gunTextureID = TextureLoader::LoadTexture("../Assets/Textures/gun_texture.png");
+	duckTextureID = TextureLoader::LoadTexture("../Assets/Textures/duck_texture.png");
 #endif
     assert(billboardTextureID != 0);
 
@@ -501,6 +509,36 @@ void World::Draw()
 		}
 		else
 		{
+			Renderer::SetShader(SHADER_PHONG);
+			if ((*it)->GetName() == "gun") {
+
+				glActiveTexture(GL_TEXTURE0);
+				GLuint textureLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "myTextureSampler");
+				glBindTexture(GL_TEXTURE_2D, gunTextureID);
+				glUniform1i(textureLocation, 0);
+			}
+			else if ((*it)->GetName() == "tree1" || (*it)->GetName() == "tree2" || (*it)->GetName() == "tree3") {
+
+				glActiveTexture(GL_TEXTURE0);
+				GLuint textureLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "myTextureSampler");
+				glBindTexture(GL_TEXTURE_2D, treeTextureID);
+				glUniform1i(textureLocation, 0);
+			}
+			else if ((*it)->GetName() == "duck") {
+
+				glActiveTexture(GL_TEXTURE0);
+				GLuint textureLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "myTextureSampler");
+				glBindTexture(GL_TEXTURE_2D, duckTextureID);
+				glUniform1i(textureLocation, 0);
+			}
+			else if ((*it)->GetName() == "ground") {
+
+
+				glActiveTexture(GL_TEXTURE0);
+				GLuint textureLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "myTextureSampler");
+				glBindTexture(GL_TEXTURE_2D, SnowGroundTextureID);
+				glUniform1i(textureLocation, 0);
+			}
 			(*it)->Draw();
 		}
 	}
