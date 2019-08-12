@@ -236,6 +236,8 @@ void World::Update(float dt)
         //cout << "clicked" << endl;
         lastMouseState = true;
 		clicked = true;
+		smokeShotTimer = 70;
+		smokeShotDelay = 2;
     }
 
     if (glfwGetMouseButton(EventManager::GetWindow(), GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE)
@@ -271,9 +273,33 @@ void World::Update(float dt)
 	// Update models
 	for (vector<Model*>::iterator it = mModel.begin(); it < mModel.end(); ++it)
 	{
-		(*it)->Update(dt);
+		if ((*it)->GetName() == "\"GunCube\"")
+		{
+			if (smokeShotTimer > 0 && smokeShotDelay == 0)
+			{
+				vec3 camLookAt = -mInverseViewMatrix[2];
+				vec3 cameraPosition = mInverseViewMatrix[3];
+				vec3 cameraPosition1 = cameraPosition * vec3(1.0f, 0.9f, 1.0f) + camLookAt * 5.0f;
+				(*it)->SetPosition(cameraPosition1);
+			}
+			else
+			{
+				(*it)->SetPosition(vec3(1000.0f, 1000.0f, 1000.0f));
+			}
+		}
+		else
+		{
+			(*it)->Update(dt);
+		}
 	}
-
+	if (smokeShotTimer > 0 && smokeShotDelay == 0)
+	{
+		smokeShotTimer -= 1;
+	}
+	else if (smokeShotDelay > 0)
+	{
+		smokeShotDelay -= 1;
+	}
 
     
     // Update billboards
@@ -421,6 +447,10 @@ void World::Draw()
 			//printf("Life is like a box of chocolates\n");
 		}
 		else if (showSkybox && (*it)->GetName() == "ground")
+		{
+
+		}
+		else if (showSkybox && (*it)->GetName() == "\"GunCube\"")
 		{
 
 		}

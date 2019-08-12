@@ -83,6 +83,8 @@ private:
 
 	bool lastMouseState = false;
 	bool clicked = false;
+	int smokeShotTimer = 0;
+	int smokeShotDelay = 0;
 
 	bool showCollisionShere = false;
 	bool collisionKeyHeld = false;
