@@ -450,7 +450,7 @@ void World::Draw()
 		{
 
 		}
-		else if (showSkybox && (*it)->GetName() == "\"GunCube\"")
+		else if (!showCollisionShere && (*it)->GetName() == "\"GunCube\"")
 		{
 
 		}
