@@ -123,42 +123,42 @@ totalLifetimeRandomness = 0.2
 [AnimationKey]
 name     = "KeyCycle13"
 position = 13.0 6.0 0.0
-rotation = 0.0f 1.0f 0.0f 0.0f
+rotation = 0.0f 1.0f 0.0f 180.0f
 
 [AnimationKey]
 name     = "KeyCycle23"
 position =  10.07 6.0 7.07
-rotation = 0.0f 1.0f 0.0f 0.0f
+rotation = 0.0f 1.0f 0.0f 135.0f
 
 [AnimationKey]
 name     = "KeyCycle33"
 position =  3.0 6.0 10.0
-rotation = 0.0f 1.0f 0.0f 0.0f
+rotation = 0.0f 1.0f 0.0f 90.0f
 
 [AnimationKey]
 name     = "KeyCycle43"
 position = -4.07 6.0 7.07
-rotation = 0.0f 1.0f 0.0f 0.0f
+rotation = 0.0f 1.0f 0.0f 45.0f
 
 [AnimationKey]
 name     = "KeyCycle53"
 position = -7.0 6.0 0.0
-rotation = 0.0f 1.0f 0.0f 360.0f
+rotation = 0.0f 1.0f 0.0f 0.0f
 
 [AnimationKey]
 name     = "KeyCycle63"
 position = -4.07 6.0 -7.07
-rotation = 0.0f 1.0f 0.0f 0.0f
+rotation = 0.0f 1.0f 0.0f 315.0f
 
 [AnimationKey]
 name     = "KeyCycle73"
 position = 3.0 6.0 -10.0
-rotation = 0.0f 1.0f 0.0f 0.0f
+rotation = 0.0f 1.0f 0.0f 270.0f
 
 [AnimationKey]
 name     = "KeyCycle83"
 position = 10.07 6.0 -7.07w
-rotation = 0.0f 1.0f 0.0f 0.0f
+rotation = 0.0f 1.0f 0.0f 225.0f
 
 [Animation]
 name     = "CycleAnim3"
