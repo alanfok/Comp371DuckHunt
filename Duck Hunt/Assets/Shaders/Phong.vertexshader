@@ -4,10 +4,11 @@
 layout(location = 0) in vec3 vertexPosition_modelspace;
 layout(location = 1) in vec3 vertexNormal_modelspace;  // You will need this when you do lighting
 layout(location = 2) in vec3 vertexColor; 
+layout(location = 3) in vec2 vertexUV; 
 
 // output to Fragment Shader
 out vec3 v_color;
-
+out vec2 UV;
 out vec3 normal;          // Transformed normal in View Space
 out vec3 eyeVector;       // Vector from the vertex to the Camera in View Space
 out vec4 lightVector;     // Vector from the vertex to the Light in View Space
@@ -34,6 +35,7 @@ uniform vec4 DistanceFogDetails;
 
 void main()
 {
+	UV= vec2(vertexUV.x,1-vertexUV.y);
 	//Shading code
 	mat4 MV_L = ViewTransform_Light * WorldTransform;
 	mat4 MVP_L = ProjectonTransform_Light * MV_L;
